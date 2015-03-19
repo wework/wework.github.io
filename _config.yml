@@ -1,0 +1,19 @@
+# Permalinks
+permalink:        pretty
+relative_permalinks: true
+
+# Setup
+title:            WeWork
+tagline:          Engineering Blog
+url:              https://engineering.wework.com
+paginate:         1
+baseurl:          /
+# author:
+#   name:
+#   url:
+#   email:
+
+# Custom vars
+version:          0.0.1
+github:
+  repo:           https://github.com/WeWork/wework.github.io
