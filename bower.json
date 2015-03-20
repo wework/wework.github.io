@@ -27,5 +27,8 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "reset-css": "~2.0.20110126"
+  }
 }

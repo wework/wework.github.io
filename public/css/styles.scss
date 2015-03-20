@@ -1,0 +1,27 @@
+---
+---
+
+@import '../../bower_components/reset-css/reset.css';
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  cursor: auto;
+  font-family: "Proxima Nova W15", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 150%;
+  background: #fff;
+  color: #222;
+}

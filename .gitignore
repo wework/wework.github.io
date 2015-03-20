@@ -3,5 +3,4 @@ _site/
 .sass-cache/
 .ruby-version
 node_modules
-bower_components
 dist
