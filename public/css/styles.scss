@@ -1,7 +1,9 @@
 ---
+# Front matter comment to ensure Jekyll properly reads file.
 ---
 
-@import '../../bower_components/reset-css/reset.css';
+@import "../../bower_components/foundation/css/normalize.css";
+@import "../../bower_components/foundation/css/foundation.css";
 
 *,
 *:before,
