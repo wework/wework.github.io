@@ -8,10 +8,9 @@ tagline:          Engineering Blog
 url:              https://engineering.wework.com
 paginate:         1
 baseurl:          /
-# author:
-#   name:
-#   url:
-#   email:
+author:
+  name:           WeWork
+  email:          careers@wework.com
 
 # Custom vars
 version:          0.0.1

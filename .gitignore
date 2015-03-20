@@ -1,3 +1,6 @@
 _site/
+.tmp
 .sass-cache/
 .ruby-version
+node_modules
+dist
