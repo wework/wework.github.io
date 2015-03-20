@@ -1,0 +1,31 @@
+{
+  "name": "wework.github.io",
+  "version": "0.0.0",
+  "homepage": "https://engineering.wework.com",
+  "authors": [
+    "Ramin B. <i8ramin@gmail.com>"
+  ],
+  "description": "WeWork Engineering Blog",
+  "main": "index.html",
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals"
+  ],
+  "keywords": [
+    "wework",
+    "wework",
+    "engineering",
+    "wework",
+    "digital"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
