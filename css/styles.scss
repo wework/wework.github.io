@@ -1,0 +1,22 @@
+---
+# The scss file which include files from _sass/
+---
+
+@charset "utf-8";
+
+@import "basscss";
+@import "main";
+@import "solarized-dark";
+
+.post {
+  .post-image {
+    min-height: 500px;
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+.posts .post .post-image {
+  min-height: 100px;
+  background-position: top center;
+}
