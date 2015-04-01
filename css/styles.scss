@@ -20,3 +20,22 @@
   min-height: 100px;
   background-position: top center;
 }
+
+
+.share-links {
+  .si {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 16px;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: lighten(#0096cc, 5%);
+    color: white;
+
+    &:hover {
+      background-color: #0096cc;
+    }
+  }
+}
