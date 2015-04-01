@@ -1,17 +1,12 @@
 {
   "name": "wework.github.io",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "homepage": "https://engineering.wework.com",
   "authors": [
     "Ramin B. <i8ramin@gmail.com>"
   ],
   "description": "WeWork Engineering Blog",
   "main": "index.html",
-  "moduleType": [
-    "amd",
-    "es6",
-    "globals"
-  ],
   "keywords": [
     "wework",
     "wework",
@@ -29,6 +24,5 @@
     "tests"
   ],
   "dependencies": {
-    "foundation": "~5.5.1"
   }
 }

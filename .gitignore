@@ -4,3 +4,6 @@ _site/
 .ruby-version
 node_modules
 dist
+
+# Ignore the config file that's used for gh-pages.
+_config.gh-pages.yml
