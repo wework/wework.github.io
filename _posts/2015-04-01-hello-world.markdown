@@ -1,6 +1,8 @@
 ---
 layout:     post
 title:      Hello, World
-summary:    Hello world.
-categories: wework blog engineering
+summary:    The WeWork Engineering team is finally creating a blog.
+categories: misc
 ---
+
+_COMING SOON..._
