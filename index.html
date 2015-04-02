@@ -4,29 +4,29 @@ layout: default
 
 <div class="home">
 
-  <!--<div class="posts">-->
-  <!--  {% for post in paginator.posts %}-->
-  <!--    <div class="post">-->
-  <!--      <a href="{{ post.url | prepend: site.baseurl }}" class="post-link">-->
-  <!--        <p class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</p>-->
-  <!--        {% if post.image %}-->
-  <!--          <div class="post-image" style="background-image:url({{post.image}})"></div>-->
-  <!--        {% endif %}-->
-  <!--        <h3 class="h2 post-title">{{ post.title }}</h3>-->
-  <!--        <p class="post-summary">-->
-  <!--          {% if post.summary %}-->
-  <!--            {{ post.summary }}-->
-  <!--          {% else %}-->
-  <!--            {{ post.excerpt }}-->
-  <!--          {% endif %}-->
-  <!--          <small><span class="read-more">Read more...</span></small>-->
-  <!--        </p>-->
+  <div class="posts">
+    {% for post in paginator.posts %}
+      <div class="post">
+        <a href="{{ post.url | prepend: site.baseurl }}" class="post-link">
+          <p class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</p>
+          {% if post.image %}
+            <div class="post-image" style="background-image:url({{post.image}})"></div>
+          {% endif %}
+          <h3 class="h2 post-title">{{ post.title }}</h3>
+          <p class="post-summary">
+            {% if post.summary %}
+              {{ post.summary }}
+            {% else %}
+              {{ post.excerpt }}
+            {% endif %}
+            <small><span class="read-more">Read more...</span></small>
+          </p>
 
 
-  <!--      </a>-->
-  <!--    </div>-->
-  <!--  {% endfor %}-->
-  <!--</div>-->
+        </a>
+      </div>
+    {% endfor %}
+  </div>
 
   {% include pagination.html %}
 </div>
