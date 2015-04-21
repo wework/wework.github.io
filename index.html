@@ -12,15 +12,17 @@ layout: default
             <div class="post-image" style="background-image:url({{post.image}})"></div>
           {% endif %}
           <h3 class="h2 post-title">{{ post.title }}</h3>
-          <p class="post-summary">
-            {% if post.summary %}
-              {{ post.summary }}
-            {% else %}
-              {{ post.excerpt }}
-            {% endif %}
-            <small><span class="read-more">Read more...</span></small>
-          </p>
         </a>
+        <p class="post-summary">
+          {% if post.summary %}
+            {{ post.summary }}
+          {% else %}
+            {{ post.excerpt }}
+          {% endif %}
+          <a href="{{ post.url | prepend: site.baseurl }}">
+            <small><span class="read-more">Read more...</span></small>
+          </a>
+        </p>
       </div>
     {% endfor %}
   </div>
