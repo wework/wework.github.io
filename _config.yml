@@ -16,11 +16,11 @@ highlighter:      pygments
 
 
 # Google analytics
-google_analytics:
+google_analytics: UA-4260314-5
 
 # Optional features
-animated:           false
-show_related_posts: false
+animated:           true
+show_related_posts: true
 show_post_footers:  false
 
 # Disqus post comments
@@ -40,7 +40,7 @@ flattr_button:
 
 # Post sharing icons
 show_sharing_icons: true
-share_text: 'Share this post'
+share_text: 'Share this post:'
 # Change to 'true' to enable individual icons
 share_facebook: true
 share_twitter: true
@@ -48,7 +48,7 @@ share_googleplus: false
 share_linkedin: false
 share_digg: false
 share_tumblr: false
-share_reddit: false
+share_reddit: true
 share_stumbleupon: false
 
 # Build settings

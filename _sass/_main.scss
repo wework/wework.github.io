@@ -310,7 +310,7 @@ h6,
   font-family: "Lato", 'Helvetica Neue', Helvetica, sans-serif;
   font-weight: 900;
   line-height: 1.2;
-  margin: 1em 0 0.5em;
+  margin: .75em 0 0.5em;
 }
 
 .social-icons {
@@ -487,12 +487,17 @@ h6,
 }
 
 .share-page {
-  font-size:  0.65em;  
+  font-size:  0.65em;
   padding: 2em 0 0 0;
-}
 
-.share-page div {
-  font-size: 1.3em;
+  .share-links {
+    margin-top: 5px;
+
+    a {
+      display: inline-block;
+      margin-right: 5px;
+    }
+  }
 }
 
 footer {
