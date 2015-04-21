@@ -12,13 +12,13 @@
   .post-image {
     min-height: 500px;
     background-size: cover;
-    background-position: center;
+    background-position: top center;
   }
 }
 
 .posts .post .post-image {
-  min-height: 100px;
-  background-position: top center;
+  min-height: 300px;
+  // background-position: 50% 25%;
 }
 
 

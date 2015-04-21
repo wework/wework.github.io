@@ -3,7 +3,7 @@ layout:       post
 title:        Zero-Downtime Deployments with Data Migrations
 author:       On Freund
 summary:
-image:        http://res.cloudinary.com/wework/image/upload/v1429582552/zero-downtime-deployment.jpg
+image:        http://res.cloudinary.com/wework/image/upload/c_lfill,f_auto,fl_progressive,g_north,h_1400,w_1600/v1429625656/engineering/zero-downtime-deployments-with-data-migrations.jpg
 categories:   data
 ---
 

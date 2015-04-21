@@ -39,3 +39,11 @@ Now you can navigate to `localhost:4000` in your browser to see the site.
 
 NOTE: passing the --drafts flag will also load all posts inside of the _drafts folder. This is
 useful when you are working on a post but are not ready to publish it yet.
+
+
+### Need a Cool Photo?
+
+To keep some visual consistency on our blog, it is recommended to use a photo by this illustrator.
+[Olga Angelloz's Portfolio on Shutterstock](http://www.shutterstock.com/gallery-1451378p1.html)
+
+The credentials are in Meldium.
