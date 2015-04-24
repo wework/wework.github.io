@@ -1,0 +1,76 @@
+---
+---
+
+// html {
+//   &.exp-on,
+//   body {
+//     height: 100%;
+//   }
+// }
+
+#expCanvas {
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  padding: 20px;
+  overflow: auto;
+  background-color: rgba(255,255,255,.98);
+  transition: all 200ms ease-in-out;
+  transform-origin: 0 0 0;
+  transform: scale3d(0,0,0);
+
+  .innerWrapper {
+    max-width: 1000px;
+    margin: auto;
+  }
+
+  &.active {
+    transform: scale3d(1,1,1);
+  }
+}
+
+#piratePanda {
+  display: flex;
+
+  .img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: transparent url(http://res.cloudinary.com/wework/image/upload/b_rgb:d8edf8,c_pad,f_webp,fl_awebp,fl_progressive,h_1000,w_1600/v1429798998/recruiting-through-gamification.jpg) no-repeat;
+    background-position: 50% 0;
+    background-size: 350px;
+  }
+
+  .chatbox {
+    position: relative;
+    min-width: 300px;
+    min-height: 100px;
+    margin-left: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #eee;
+    color: #000;
+
+    &::before {
+      right: 100%;
+      top: 50%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      border-right-color: #eee;
+      border-width: 10px;
+      margin-top: -10px;
+    }
+  }
+
+  .typed-cursor {
+    display: none;
+  }
+}

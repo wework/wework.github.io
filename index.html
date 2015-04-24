@@ -5,7 +5,7 @@ layout: default
 <div class="home">
   <div class="posts">
     {% for post in paginator.posts %}
-      <div class="post">
+      <div class="post" id="post-{{ post.id | replace: '/', '-' }}">
         <a href="{{ post.url | prepend: site.baseurl }}" class="post-link">
           <p class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</p>
           {% if post.image %}

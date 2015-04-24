@@ -705,6 +705,15 @@ a:hover {
   background-color: #004b66;
 }
 
+.button-red {
+  color: #fff;
+  background-color: #d3596c;
+}
+.button-red:hover {
+  color: #fff;
+  background-color: darken(#d3596c, 10%);
+}
+
 .button-gray {
   color: #fff;
   background-color: #777777;

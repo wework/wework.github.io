@@ -135,7 +135,15 @@ table {
   }
 }
 
+.related-posts {
+  margin-top: 20px;
+  background-color: #f8f8f8;
+  padding: 20px;
+}
+
 .related-post-title {
+  margin: 0 0 15px;
+  padding-bottom: 10px;
   border-bottom: thin solid #f3f3f3;
 }
 
@@ -488,7 +496,7 @@ h6,
 
 .share-page {
   font-size:  0.65em;
-  padding: 2em 0 0 0;
+  padding: 3em 0 2em;
 
   .share-links {
     margin-top: 5px;

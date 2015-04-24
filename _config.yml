@@ -19,7 +19,7 @@ highlighter:      pygments
 hello_bar: 5a9be6e710af44d4d730cfd1b4d291233f0f7fde
 
 # Google analytics
-google_analytics: UA-4260314-5
+google_analytics:
 
 # Optional features
 animated:           false
