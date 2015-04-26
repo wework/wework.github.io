@@ -1,39 +1,7 @@
 ---
 ---
 
-// html {
-//   &.exp-on,
-//   body {
-//     height: 100%;
-//   }
-// }
-
-#expCanvas {
-  height: 100%;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 999;
-  padding: 20px;
-  overflow: auto;
-  background-color: rgba(255,255,255,.98);
-  transition: all 200ms ease-in-out;
-  transform-origin: 0 0 0;
-  transform: scale3d(0,0,0);
-
-  .innerWrapper {
-    max-width: 1000px;
-    margin: auto;
-  }
-
-  &.active {
-    transform: scale3d(1,1,1);
-  }
-}
-
-#piratePanda {
+.pirate-panda {
   display: flex;
 
   .img {
@@ -45,19 +13,33 @@
     background-size: 350px;
   }
 
+  .content {
+    flex: 1;
+  }
+
   .chatbox {
     position: relative;
     min-width: 300px;
-    min-height: 100px;
+    max-width: 500px;
+    min-height: 50px;
+    margin-top: 25px;
     margin-left: 20px;
     padding: 15px;
     border-radius: 10px;
     background-color: #eee;
     color: #000;
+    font-size: 12pt;
+    transition: all 200ms;
+
+    & + .button.next {
+      margin-top: 10px;
+      margin-left: 20px;
+      opacity: 0;
+    }
 
     &::before {
       right: 100%;
-      top: 50%;
+      top: 40px;
       border: solid transparent;
       content: " ";
       height: 0;
@@ -68,9 +50,23 @@
       border-width: 10px;
       margin-top: -10px;
     }
+
+    &.done-typing {
+      & + .button.next {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+#game {
+  margin: 50px 0;
+
+  .level {
+    // display: none;
   }
 
-  .typed-cursor {
+  panda {
     display: none;
   }
 }
