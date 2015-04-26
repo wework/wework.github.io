@@ -3,7 +3,7 @@ layout:       post
 title:        Recruiting Through Gamification
 author:       Ramin Bozorgzadeh (@i8ramin)
 summary:
-image:        http://res.cloudinary.com/wework/image/upload/b_rgb:d8edf8,c_pad,f_webp,fl_awebp,fl_progressive,h_1000,w_1600/v1429798998/recruiting-through-gamification.jpg
+image:        http://res.cloudinary.com/wework/image/upload/b_rgb:d8edf8,c_pad,f_auto,g_north,h_1000,w_1600/v1430060208/engineering/recruiting-through-gamification.jpg
 categories:   hiring
 customjs:
   - /bower_components/jsrender/jsrender.min.js
