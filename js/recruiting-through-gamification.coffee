@@ -2,6 +2,46 @@
 # required for coffeescript to work
 ---
 
+class Game
+  constructor: () ->
+    @ref = new Firebase('https://we-eng-blog.firebaseio.com')
+    @redPill = $('#redPill')
+    @levels = []
+    @candidate = new Candidate(@ref.getAuth())
+    return
+  scrollTo: (level) ->
+    $(window).scrollTo()
+  init: ->
+    $('#game .level').each (i, level) =>
+      @levels.push new Level(level)
+
+    @currentLevel = @levels.splice(0, 1)[0]
+
+    @currentLevel.init(@candidate) if @candidate.initialized
+
+    @redPill.on 'click', (e) =>
+      return if @candidate.initialized
+      @ref.authWithOAuthPopup "github", (error, authData) =>
+        if error
+          console.log("Login Failed!", error)
+        else
+          console.log("Authenticated successfully with payload:", authData)
+          @ref.child("candidates/#{authData.uid}").set(authData)
+          @candidate = new Candidate(authData)
+          @currentLevel.init(@candidate)
+      , {
+        remember: "sessionOnly"
+        scope: "user:email"
+      }
+    return
+
+class Level
+  constructor: (levelEl) ->
+    @levelEl = levelEl
+    @panda = new Panda(@levelEl)
+  init: (candidate) ->
+    @panda.init(candidate)
+
 class Panda
   constructor: (containerEl) ->
     @chatSettings =
@@ -12,44 +52,29 @@ class Panda
       showCursor: false
       contentType: 'html'
 
-    containerEl = $(containerEl)
+    @containerEl = $(containerEl)
+    return
+  init: (candidate) ->
+    pandaEl = @containerEl.find('panda')
+    @chatSettings.strings = [pandaEl.html().replace('{name}', candidate.name())]
+
     pandaTpl = $.templates('#privatePandaTpl').render()
-    pandaEl = containerEl.find('panda')
-    strings = []
-
-    pandaEl.find('p').each (i, p) =>
-      strings.push $(p).text()
-
-    @chatSettings.strings = strings
-
     pandaEl.replaceWith(pandaTpl)
 
-    @element = containerEl.find('.pirate-panda')
+    @element = @containerEl.find('.pirate-panda')
     @chatBox = @element.find('.chatbox')
-    return
-  talk: ->
-    console.log(@chatSettings)
+
     @chatBox.typed(@chatSettings)
     return
 
-class Level
-  constructor: (levelEl) ->
-    @levelEl = levelEl
-    @panda = new Panda(@levelEl)
-    @panda.talk()
-  greet: (text) ->
-    @panda.say(text)
-
-class Game
-  constructor: () ->
-    @redPill = $('#redPill')
-    @levels = []
-    return
-  init: ->
-    $('.levels .level').each (i, level) =>
-      @levels.push new Level(level)
-    @currentLevel = @levels.splice(0, 1)
-    return
+class Candidate
+  constructor: (authData) ->
+    @initialized = authData?
+    @authData = authData
+  avatarUrl: ->
+    @authData.github.cachedUserProfile.avatar_url
+  name: ->
+    @authData.github.displayName.split(' ')[0]
 
 $ ->
   window.game = new Game()
@@ -79,8 +104,8 @@ $ ->
   #   expCanvas.addClass('active')
 
   #   chatSettings.strings = [
-  #     "Well done! You've made it to level 0.^300",
-  #     "Don't worry, it'll get more interesting from here...."
+  #     'Well done! You've made it to level 0.^300',
+  #     'Don't worry, it'll get more interesting from here....'
   #   ]
 
   #   chatSettings.resetCallback = () -> chatBox.removeClass('done-typing')
@@ -95,7 +120,7 @@ $ ->
 
 
   #     chatSettings.strings = [
-  #       "Area you ready for level 1?"
+  #       'Area you ready for level 1?'
   #     ]
 
   #     chatBox.typed(chatSettings)

@@ -24,5 +24,10 @@
     "tests"
   ],
   "dependencies": {
+    "firebase": "~2.2.4",
+    "firebase-simple-login": "~1.6.4"
+  },
+  "resolutions": {
+    "firebase": "~2.2.4"
   }
 }

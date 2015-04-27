@@ -1,11 +1,12 @@
 ---
 layout:       post
-title:        Recruiting Through Gamification
+title:        Recruiting Through Gamification (Front-End Edition)
 author:       Ramin Bozorgzadeh (@i8ramin)
 summary:
 image:        http://res.cloudinary.com/wework/image/upload/b_rgb:d8edf8,c_pad,f_auto,g_north,h_1000,w_1600/v1430060208/engineering/recruiting-through-gamification.jpg
 categories:   hiring
 customjs:
+  - /bower_components/firebase/firebase-debug.js
   - /bower_components/jsrender/jsrender.min.js
   - /bower_components/typed.js/dist/typed.min.js
   - /js/recruiting-through-gamification.js
@@ -26,10 +27,10 @@ As with any experiment, we need volunteers. We will have two self selecting test
   <div class="level level-0">
     <h2 class="title">Level 0</h2>
     <panda>
-      <p>Oh hai. You made it to level 0.</p>
-      <p>Let's see what you can do now</p>
+      Welcome to the game <b>{name}</b>!^500<br>
+      You've made it to level 0.<br>
+      You are part of test group <b>Alpha</b>.
     </panda>
-    <p>Welcome to the game</p>
   </div>
 
   <div class="level level-1">
