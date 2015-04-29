@@ -19,3 +19,7 @@ ga('create', '{{ site.google_analytics }}', 'auto');
 ga('send', 'pageview');
 </script>
 {% endif %}
+
+{% if site.hello_bar %}
+<script src="//my.hellobar.com/{{site.hello_bar}}.js" type="text/javascript" charset="utf-8" async="async"></script>
+{% endif %}
