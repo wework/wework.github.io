@@ -37,13 +37,22 @@ class Game
 
 class Level
   constructor: (levelEl) ->
-    @levelEl = levelEl
+    @levelEl = $(levelEl)
+    @levelEl.data('level', this)
+    @continueButton = @levelEl.find('button.continue')
     @panda = new Panda(@levelEl)
   init: (candidate) ->
+    @levelEl.show()
+    $('html, body').animate({ scrollTop: @levelEl.offset().top }, 1000)
+
     @panda.init(candidate)
+    @continueButton.on 'click', (e) =>
+      nextLevelId = $(e.target).data('next-level')
+      $(nextLevelId).data('level').init(game.candidate)
 
 class Panda
   constructor: (containerEl) ->
+    @containerEl = containerEl
     @chatSettings =
       startDelay: 300
       backSpeed: 0
@@ -51,8 +60,7 @@ class Panda
       typeSpeed: 0
       showCursor: false
       contentType: 'html'
-
-    @containerEl = $(containerEl)
+      callback: => @containerEl.addClass('typed')
     return
   init: (candidate) ->
     pandaEl = @containerEl.find('panda')

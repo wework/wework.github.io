@@ -1,73 +1,91 @@
 ---
 ---
 
+$level-bg: #f7f7f7;
+
 .post .post-image {
   background-size: 150%;
-}
-
-.pirate-panda {
-  display: flex;
-
-  .img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background: transparent url(http://res.cloudinary.com/wework/image/upload/b_rgb:d8edf8,c_pad,f_webp,fl_awebp,fl_progressive,h_1000,w_1600/v1429798998/recruiting-through-gamification.jpg) no-repeat;
-    background-position: 50% 0;
-    background-size: 350px;
-  }
-
-  .content {
-    flex: 1;
-  }
-
-  .chatbox {
-    position: relative;
-    min-width: 300px;
-    max-width: 500px;
-    min-height: 50px;
-    margin-top: 20px;
-    margin-left: 20px;
-    padding: 15px;
-    border-radius: 10px;
-    background-color: #eee;
-    color: #000;
-    font-size: 12pt;
-    transition: all 200ms;
-
-    & + .button.next {
-      margin-top: 10px;
-      margin-left: 20px;
-      opacity: 0;
-    }
-
-    &::before {
-      right: 100%;
-      top: 40px;
-      border: solid transparent;
-      content: " ";
-      height: 0;
-      width: 0;
-      position: absolute;
-      pointer-events: none;
-      border-right-color: #eee;
-      border-width: 10px;
-      margin-top: -10px;
-    }
-
-    &.done-typing {
-      & + .button.next {
-        opacity: 1;
-      }
-    }
-  }
 }
 
 #game {
   margin: 50px 0;
 
+  .pirate-panda {
+    display: flex;
+
+    .img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: transparent url('//res.cloudinary.com/wework/image/upload/b_rgb:d8edf8,c_pad,f_auto,g_north,h_1000,w_1600/v1430060208/engineering/recruiting-through-gamification.jpg') no-repeat;
+      background-position: 50% 0;
+      background-size: 350px;
+    }
+
+    .content {
+      flex: 1;
+    }
+
+    .chatbox {
+      position: relative;
+      min-width: 300px;
+      max-width: 500px;
+      min-height: 50px;
+      margin-left: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      background-color: rgba(255,255,255,.9);
+      color: #000;
+      font-size: 12pt;
+      transition: all 200ms;
+
+      &::before {
+        right: 100%;
+        top: 40px;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-right-color: rgba(255,255,255,.9);
+        border-width: 10px;
+        margin-top: -10px;
+      }
+    }
+  }
+
   .level {
-    // display: none;
+    display: none;
+    position: relative;
+    padding: 2rem;
+    margin-bottom: 50px;
+    border-radius: .25rem;
+    background-color: $level-bg;
+
+    .title {
+      position: absolute;
+      top: -20px;
+      left: 10px;
+      padding: 2px 10px;
+      border-radius: .25rem;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: $level-bg;
+      color: #999;
+    }
+
+    button.continue {
+      display: none;
+      margin: 10px 0 10px 140px;
+      transition: all 350ms ease-in-out;
+    }
+
+    &.typed {
+      button.continue {
+        display: block;
+      }
+    }
   }
 
   panda {

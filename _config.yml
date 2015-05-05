@@ -6,14 +6,12 @@ description: ""
 baseurl:     ""
 url:         "http://engineering.wework.com"
 
-
 # Permalinks
 permalink:        pretty
 relative_permalinks: true
 
 # Syntax highlighting
 highlighter:      pygments
-
 
 # hellobar.com
 hello_bar: 5a9be6e710af44d4d730cfd1b4d291233f0f7fde
@@ -62,3 +60,6 @@ permalink:    pretty
 paginate:     3
 sass:
   compressed: true
+
+gems:
+  - octopress-autoprefixer

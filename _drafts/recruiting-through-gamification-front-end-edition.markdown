@@ -24,21 +24,21 @@ As with any experiment, we need volunteers. We will have two self selecting test
 </div>
 
 <div id="game" class="levels">
-  <div class="level level-0">
-    <h2 class="title">Level 0</h2>
+  <div id="level-0" class="level">
+    <div class="title">Level 0</div>
     <panda>
-      Welcome to the game <b>{name}</b>!^500<br>
-      You've made it to level 0.<br>
-      You are part of test group <b>Alpha</b>.
+      Hi <b>{name}</b>.^500 My name is <b>Pete</b>.^500 I will be your guide.^500<br>
+      You will be presented with a set of challenges.^400<br>
+      Complete as many as you can.^400 There are no set time limits, but we are watching...^400
     </panda>
+    <button class="button button-small button-blue continue" data-next-level="#level-1">Continue</button>
   </div>
 
-  <div class="level level-1">
-    <h2 class="title">Level 1</h2>
+  <div id="level-1" class="level">
+    <div class="title">Level 1</div>
     <panda>
       <p>blah blah blah</p>
     </panda>
-    <p>This is the next level</p>
   </div>
 </div>
 
