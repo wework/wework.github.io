@@ -9,15 +9,20 @@ class Game
     @levels = []
     @candidate = new Candidate(@ref.getAuth())
     return
+  # getCandidate: ->
+  #   @candidate
+  # getLevels: ->
+  #   @levels
+  # getRef: ->
+  #   @ref
   scrollTo: (level) ->
-    $(window).scrollTo()
+    $('html, body').animate({ scrollTop: level.levelEl.offset().top }, 1000)
   init: ->
     $('#game .level').each (i, level) =>
       @levels.push new Level(level)
 
     @currentLevel = @levels.splice(0, 1)[0]
-
-    @currentLevel.init(@candidate) if @candidate.initialized
+    @currentLevel.init() if @candidate.initialized
 
     @redPill.on 'click', (e) =>
       return if @candidate.initialized
@@ -28,30 +33,33 @@ class Game
           console.log("Authenticated successfully with payload:", authData)
           @ref.child("candidates/#{authData.uid}").set(authData)
           @candidate = new Candidate(authData)
-          @currentLevel.init(@candidate)
+
+          @currentLevel.init()
       , {
         remember: "sessionOnly"
         scope: "user:email"
       }
     return
 
-class Level
+class Level extends Game
   constructor: (levelEl) ->
+    super("Level")
     @levelEl = $(levelEl)
     @levelEl.data('level', this)
     @continueButton = @levelEl.find('button.continue')
     @panda = new Panda(@levelEl)
-  init: (candidate) ->
+  init: () ->
     @levelEl.show()
-    $('html, body').animate({ scrollTop: @levelEl.offset().top }, 1000)
+    @scrollTo(this)
 
-    @panda.init(candidate)
+    @panda.init()
     @continueButton.on 'click', (e) =>
       nextLevelId = $(e.target).data('next-level')
-      $(nextLevelId).data('level').init(game.candidate)
+      $(nextLevelId).data('level').init()
 
-class Panda
+class Panda extends Game
   constructor: (containerEl) ->
+    super("Panda")
     @containerEl = containerEl
     @chatSettings =
       startDelay: 300
@@ -62,9 +70,9 @@ class Panda
       contentType: 'html'
       callback: => @containerEl.addClass('typed')
     return
-  init: (candidate) ->
+  init: () ->
     pandaEl = @containerEl.find('panda')
-    @chatSettings.strings = [pandaEl.html().replace('{name}', candidate.name())]
+    @chatSettings.strings = [pandaEl.html().replace('{name}', @candidate.name())]
 
     pandaTpl = $.templates('#privatePandaTpl').render()
     pandaEl.replaceWith(pandaTpl)
