@@ -3,7 +3,7 @@ layout:       post
 title:        Inside WeWork's Tech Stack
 author:       Matt Star
 summary:
-image:        http://res.cloudinary.com/wework/image/upload/s--unWFH26o--/c_fill,fl_progressive,g_north,h_1000,q_jpegmini,w_1600/v1430251626/engineering/caching-external-apis.jpg
+image:        http://res.cloudinary.com/wework/image/upload/s--Y5EaKyFC--/c_scale,fl_progressive,q_jpegmini:2,w_1072/v1434404739/engineering/inside-weworks-tech-stack.jpg
 categories:   engineering
 ---
 
