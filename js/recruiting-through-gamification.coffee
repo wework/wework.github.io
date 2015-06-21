@@ -7,47 +7,51 @@ class Game
     @ref = new Firebase('https://we-eng-blog.firebaseio.com')
     @redPill = $('#redPill')
     @levels = []
-    @candidate = new Candidate(@ref.getAuth())
+
+    authData = @ref.getAuth()
+    @candidate = new Candidate(authData) if authData
+
+    @redPill.on 'click', => @init()
     return
-  # getCandidate: ->
-  #   @candidate
-  # getLevels: ->
-  #   @levels
-  # getRef: ->
-  #   @ref
   scrollTo: (level) ->
-    $('html, body').animate({ scrollTop: level.levelEl.offset().top }, 1000)
+    $('html, body').animate({ scrollTop: level.levelEl.offset().top - 70 }, 1000)
   init: ->
-    $('#game .level').each (i, level) =>
-      @levels.push new Level(level)
+    processAuth = (authData) =>
+      @ref.child("candidates/#{authData.uid}").set(authData)
+      @candidate = new Candidate(authData)
 
-    @currentLevel = @levels.splice(0, 1)[0]
-    @currentLevel.init() if @candidate.initialized
+      $('#game .level').each (i, level) =>
+        @levels.push new Level(level, @candidate)
 
-    @redPill.on 'click', (e) =>
-      return if @candidate.initialized
+      @currentLevel = @levels.splice(0, 1)[0]
+      @currentLevel.init()
+
+    if @candidate.authData?
+      processAuth(@candidate.authData)
+    else
       @ref.authWithOAuthPopup "github", (error, authData) =>
         if error
-          console.log("Login Failed!", error)
+          console.error("Login Failed!", error)
         else
-          console.log("Authenticated successfully with payload:", authData)
-          @ref.child("candidates/#{authData.uid}").set(authData)
-          @candidate = new Candidate(authData)
-
-          @currentLevel.init()
+          # console.log("Authenticated successfully with payload:", authData)
+          processAuth(authData)
+          return
       , {
         remember: "sessionOnly"
         scope: "user:email"
       }
+
     return
 
 class Level extends Game
-  constructor: (levelEl) ->
+  constructor: (levelEl, candidate) ->
     super("Level")
+
+    @candidate = candidate
     @levelEl = $(levelEl)
     @levelEl.data('level', this)
     @continueButton = @levelEl.find('button.continue')
-    @panda = new Panda(@levelEl)
+    @panda = new Panda(@levelEl, candidate)
   init: () ->
     @levelEl.show()
     @scrollTo(this)
@@ -58,8 +62,10 @@ class Level extends Game
       $(nextLevelId).data('level').init()
 
 class Panda extends Game
-  constructor: (containerEl) ->
+  constructor: (containerEl, candidate) ->
     super("Panda")
+
+    @candidate = candidate
     @containerEl = containerEl
     @chatSettings =
       startDelay: 300
@@ -94,7 +100,6 @@ class Candidate
 
 $ ->
   window.game = new Game()
-  game.init()
 
   # bluePill = $('#bluePill')
   # redPill = $('#redPill')

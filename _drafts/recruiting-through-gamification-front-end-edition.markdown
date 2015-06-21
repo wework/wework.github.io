@@ -39,6 +39,14 @@ As with any experiment, we need volunteers. We will have two self selecting test
     <panda>
       <p>blah blah blah</p>
     </panda>
+    <button class="button button-small button-blue continue" data-next-level="#level-2">Continue</button>
+  </div>
+
+  <div id="level-2" class="level">
+    <div class="title">Level 2</div>
+    <panda>
+      <p>Wooohooooo</p>
+    </panda>
   </div>
 </div>
 
