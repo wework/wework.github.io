@@ -1,6 +1,6 @@
 ---
 layout:       post
-title:        React Flux (Reflux) to Redux Tutorial
+title:        React Tutorial - From Flux (Reflux) to Redux
 author:       Matt Star
 summary:
 image:        http://res.cloudinary.com/wework/image/upload/s--xpIlilub--/c_scale,q_jpegmini:1,w_1000/v1443207604/engineering/shutterstock_294201896.jpg
@@ -25,7 +25,7 @@ Going from a state where most of the location filters are hidden, with a link th
 
 ![Filters Expanded](http://res.cloudinary.com/wework/image/upload/s--sM1ilgkF--/fl_progressive,q_jpegmini:1/v1443360347/engineering/fewer_filters.jpg)
 
-### The old way...jquery:
+### jquery - the old standby:
 
 In an *imperative* example using jquery you could have a listener to that specific link, and when it's clicked have it toggle the hidden filters container:
 
@@ -41,7 +41,7 @@ How can we do better???
 
 Let's now look at the more *declarative* example with our initial Reflux implementation.
 
-### The new kid on the block...Reflux:
+### Reflux - the first attempt:
 
 What if we had access to a boolean that told us whether we should show or hide the hidden filters container? Our React components would listen to that boolean so it would know what to display (...*declarative*), then our link component would simply dispatch an action that would toggle that boolean when clicked.
 
@@ -168,7 +168,7 @@ I know this might seem like overkill essentially replacing 3 lines of jquery and
 But this tutorial isn't about why you should use React. What about Reflux???
 
 
-### That new hotness...Redux:
+### Redux - Finally:
 
 When you start building larger production level applications that require many types of stores and a more complex data model, reflux can start to feel a little bloated (TERRIBLE PUN). Redux is a natural successor to reflux (and other flux patterns in general).
 
@@ -588,9 +588,7 @@ export default connect(
 
 ## EXAMPLE 3: Filtering that Fetched Data
 
-What if we want to filter any of our existing data? For that you use [reselect](https://rackt.github.io/redux/docs/recipes/ComputingDerivedData.html).
-
-Reselect allows you to create memoized selectors that only update when the sections of the store that it is listening to are updated.
+What if we want to filter any of our existing data? For that you use [reselect](https://rackt.github.io/redux/docs/recipes/ComputingDerivedData.html). Reselect allows you to create memoized selectors that only update when the sections of the store that it is listening to are updated.
 
 In the example of filtering locations:
 
