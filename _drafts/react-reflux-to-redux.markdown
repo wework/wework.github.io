@@ -1,13 +1,13 @@
 ---
 layout:       post
-title:        React Reflux to Redux Tutorial
+title:        React Flux (Reflux) to Redux Tutorial
 author:       Matt Star
 summary:
 image:        http://res.cloudinary.com/wework/image/upload/s--xpIlilub--/c_scale,q_jpegmini:1,w_1000/v1443207604/engineering/shutterstock_294201896.jpg
 categories:   process
 ---
 
-There are many great tutorials and boilerplate apps online--linked to in the footer of this post--and even documentation for redux and react itself is fantastic, so for the purposes of this tutorial I'd like to focus on purely how we switched from using reflux to redux in production. You don't necesarilly need a background in Reflux or Redux to understand what's going on, but at least a working knowledge of React is recommended--bonus points for [flux](https://facebook.github.io/flux/docs/overview.html) knowledge as well.
+There are many great tutorials and boilerplate apps online--linked to in the footer of this post--and even documentation for redux and react itself is fantastic, so for the purposes of this tutorial I'd like to focus on purely how we switched from using reflux to redux in production. You don't necesarilly need a background in Reflux or Redux to understand what's going on, but at least a working knowledge of React is recommended--bonus points for [flux](https://facebook.github.io/flux/docs/overview.html) knowledge as well. This tutorial was initilly written to onboard other WeWork engineers, hence its density, and is intended for beginners and experts alike.
 
 Over the last week or so we took the time to convert our ES5 React Reflux implementation of our [location's flow](https://www.wework.com/locations/new-york-city) into a brand spanking new ES6/7 React ***Redux*** implemenation. We'll go over 3 important examples in our data flow: saving the state of the ui in a store, fetching data from an external API to hydrate our store, and filtering data that is already in our store. This might be redundant, but you'll also get some transitioning from ES5 to ES6/ES7 bonus tips.
 
@@ -126,9 +126,6 @@ module.exports = ShowFiltersLink;
 
 // src/components/location_filters.js
 
-// ***NOTE: I removed a lot of code from this component not relevant
-// to this tutorial:
-
 var ShowFiltersStore = require('../stores/show_filters_store');
 var ShowFiltersLink = require('./show_filters_link')
 
@@ -173,7 +170,7 @@ But this tutorial isn't about why you should use React. What about Reflux???
 
 ### That new hotness...Redux:
 
-Redux is great. We took the time to rewrite a major piece of functionality in our application because it's so great, and it's a natural successor to reflux (and other flux libraries).
+When you start building larger production level applications that require many types of stores and a more complex data model, reflux can start to feel a little bloated (TERRIBLE PUN). Redux is a natural successor to reflux (and other flux patterns in general).
 
 #### Redux: A Quick Intro
 
@@ -185,26 +182,39 @@ We're going to go over a few examples, but take a look at the [Redux docs](https
 
 This sounds similar to the reflux implementation, but the main differences boil down to:
 
- * **There is only 1 store.** Reflux allows you to create infinite stores, with components picking and choosing the ones to listen to. The Redux pattern has only 1 store, which enforces a React best practice of having 1 parent container for your app that connects to this store, and passes down only the necessary data to each child component.
- * **Dispatching of Actions.** FROM THE [DOCS](https://rackt.github.io/redux/index.html): "Redux doesn’t have a Dispatcher or support many stores. Instead, there is just a single store with a single root reducing function. As your app grows, instead of adding stores, you split the root reducer into smaller reducers independently operating on the different parts of the state tree. This is exactly like there is just one root component in a React app, but it is composed out of many small components." ...a pattern that works very well in a production app
+ * **There is only 1 store.** Reflux allows you to create infinite stores, with components picking and choosing the ones to listen to. The Redux pattern has only 1 store, which enforces a React best practice of having 1 parent container component for your app that connects to this store, and passes down only the necessary data to each child component as props.
+ * **Dispatching of Actions.** FROM THE [DOCS](https://rackt.github.io/redux/index.html): "Redux doesn’t have a Dispatcher or support many stores. Instead, there is just a single store with a single root reducing function. As your app grows, instead of adding stores, you split the root reducer into smaller reducers independently operating on the different parts of the state tree. This is exactly like there is just one root component in a React app, but it is composed out of many small components." ...a pattern that works very well in a production app.
 
 Let's look at the Redux implementation of our showFiltersLink.
 
 A few caveats before diving into the new code:
 
  * We adopted the [ducks/modules](https://github.com/erikras/ducks-modular-redux) pattern from the [The React/Redux/HotReloader Boilerplate app](https://github.com/erikras/react-redux-universal-hot-example) when building our Redux actions and reducers. This is why our implementation might look slightly different from those in the Redux docs.
- * As we went through the process of converting Reflux to Redux we also upgraded to the new ES6 syntax.
+ * As we went through the process of converting Reflux to Redux we also updated our code to the new ES6 syntax.
 
 #### Redux: Building a module
 
-First the actionType, action, and reducer in our showFilters module:
+The single store concept can seem a little strange coming from the reflux world. In an example where you're filtering locations, it could look something like this:
+
+```js
+{
+  showFilters: true,
+  locations [
+    { name: "Bryant Park" },
+    { name: "42nd St"},
+    etc...
+  ]
+}
+```
+
+With that in mind, lets first build the actionType, action, and reducer in our showFilters module, which will represent the "showFilters" part of the store object written above:
 
 ```js
 // src/redux/modules/show_filters.js
 
 // Define the action type as a constant.
 // You'll see how this url style naming convention comes in handy
-// later in the redux logger and redux-devtools.
+// later when we look at the redux logger and redux-devtools.
 
 const TOGGLE = 'wework.com/showFilters/TOGGLE';
 
@@ -240,21 +250,35 @@ Next we need to build the single global reducing function. Remember according to
 
 import { combineReducers } from 'redux';
 
+// Import the individual reducers from their respective modules:
 import showFilters from './show_filters';
 import locations from './locations';
 
+// Using the ES6 object literal shorthand assignment combine them
+// to create the store:
 export default combineReducers({
-  locations,
-  showFilters
+  showFilters,
+  locations
 });
+
+// REMEMBER OUR STORE WILL EVENTUALLY LOOK LIKE THE FOLLOWING
+
+// {
+//   showFilters: true,
+//   locations [
+//     { name: "Bryant Park" },
+//     { name: "42nd St"},
+//     etc...
+//   ]
+// }
 
 ```
 
 #### Redux: The Setup
 
-The following is about to be a lot of code (taken almost directly from the docs).
+Now that we've set up our single store, how do we get it into the application? Unfortunatley, it looks like [mixins are dead](https://medium.com/@dan_abramov/mixins-are-dead-long-live-higher-order-components-94a0d2f9e750) so we can't use the same pattern we were using in the ES5 Reflux example.
 
-We need to initialize our Redux store:
+Let's start by initializing our Redux store:
 
 ```js
 // src/redux/init.js
@@ -265,8 +289,8 @@ import createLogger from 'redux-logger';
 
 const reducer = require('./modules/reducer');
 
-// Use redux-logger only in dev mode (**REPLACE WITH YOUR ENV**)
-const __DEV__ = true;
+// Use redux-logger only in dev mode
+const __DEV__ = // SOME TYPE OF ENV VARIABLE;
 const logger = createLogger({
   predicate: (getState, action) => __DEV__
 });
@@ -281,7 +305,9 @@ export default function createApiClientStore(initialState) {
 }
 ```
 
-Connect to the Redux API to pass store down to main app component:
+What you're looking at above is another huge benefit to Reflux: [**Middleware**](https://rackt.github.io/redux/docs/advanced/Middleware.html). You can write custom code to inject extensions into your redux flow, or include already written middleware like [redux-thunk](https://github.com/gaearon/redux-thunk) or [redux-logger](https://github.com/fcomb/redux-logger). We'll need redux-thunk for our external API implementation in Example 2.
+
+Next, let's connect the store to our main `<App />` component using the `<Provider />` component. It "makes our store instance available to the components below." ([DOCS](https://rackt.github.io/redux/docs/basics/UsageWithReact.html))
 
 ```js
 // src/containers/root.js
@@ -291,11 +317,14 @@ import App from './app';
 import { Provider } from 'react-redux';
 import createApiClientStore from '../redux/init';
 
+
+// Import the store created in init.js
 const store = createApiClientStore();
 
 export default class Root extends Component {
   render() {
     return (
+      // Connect the App component to this new redux API Client Store
       <Provider store={store}>
         {() => <App /> }
       </Provider>
@@ -304,7 +333,7 @@ export default class Root extends Component {
 }
 ```
 
-And ultimately connect to the store in your parent component to pass down necessary data as props:
+And ultimately connect the `<App />` component to the store to pass down necessary data as props to it's child components:
 
 ```js
 // src/containers/app.js
@@ -323,13 +352,15 @@ import ShowFiltersLink from '../components/show_filters_link';
 class App extends Component {
   render() {
     // Notice dispatch() from the Redux API is included as a prop
-    // from the connect() function
+    // from the connect() function.
     const {
       showFilters,
       dispatch
     } = this.props;
 
-    // Bind toggle() action to dispatch() so it hits our Redux root reducing function:
+    // Bind toggle() action to dispatch(). You need to bind all
+    // actions to dispatch() or it will not be picked up by the
+    // combined Reducer created in src/redux/modules/reducer.js
     const actions = bindActionCreators({
       showFiltersToggle
     }, dispatch)
@@ -337,8 +368,7 @@ class App extends Component {
     return (
       <div className="app-wrapper locations-wrapper">
         <section className="location-filters-section">
-          // Pass showFilters as well as the toggle() action
-          // to be used in the component as props:
+          // Pass down showFilters as well as the toggle() action as props:
           <ShowFiltersLink showFilters={showFilters} actions={actions} />
         </section>
       </div>
@@ -348,7 +378,7 @@ class App extends Component {
 }
 
 // Connect to redux store and map the showFilters part of the
-// store to props:
+// store to props (this also maps dispatch() as a prop):
 export default connect(
   state => ({
     showFilters: state.showFilters
@@ -357,14 +387,274 @@ export default connect(
 
 ```
 
+Now, all you have to do is use your props like you normally would in your components:
+
+```js
+// src/components/show_filters_link.js
+
+import React, {Component, PropTypes} from 'react';
+
+class ShowFiltersLink extends Component {
+  render() {
+    const {actions, showFilters} = this.props;
+
+    const linkText = showFilters ? 'Fewer Filters' : 'More Filters'
+
+    return (
+      <a
+        onClick={actions.showFiltersToggle}
+        className="toggle-filters-link" >
+          {linkText}
+      </a>
+    )
+  }
+}
+
+ShowFiltersLink.propTypes = {
+  actions: PropTypes.object,
+  showFilters: PropTypes.bool
+};
+
+export default ShowFiltersLink;
+
+```
 
 ## EXAMPLE 2: Fetching Data from an External API
 
-Hi
+Now that we have the basics of redux under our belt, let's look at hydrating the store with data from an external API.
+
+```js
+// Dependency for our external API call:
+import fetch from 'isomorphic-fetch';
+
+// Create our Action Types:
+const LOAD = 'wework.com/locations/LOAD';
+const LOAD_SUCCESS = 'wework.com/locations/LOAD_SUCCESS';
+
+
+// Build our Reducer with a default state of an empty array:
+const initialState = {
+  loaded: false,
+  data: []
+};
+
+export default function reducer(state = initialState, action) {
+  switch (action.type) {
+  case LOAD:
+    return {
+      ...state,
+      loading: true
+    };
+  case LOAD_SUCCESS:
+    return {
+      ...state,
+      loading: false,
+      loaded: true,
+      lastUpdated: Date.now(),
+      data: action.data
+    };
+  default:
+    return state;
+  }
+}
+
+// Build our actions
+function requestLocations() {
+  return {
+    type: LOAD
+  };
+}
+
+function receiveLocations(json) {
+  return {
+    type: LOAD_SUCCESS,
+    data: json,
+    receivedAt: Date.now()
+  };
+}
+
+
+// Build action creaters that return a function instead of the
+// actions above (thanks to redux-thunk middleware):
+function fetchLocations() {
+  // thunk middleware knows how to handle functions
+  return function (dispatch) {
+    dispatch(requestLocations());
+
+    // Return a promise to wait for
+    // (this is not required by thunk middleware, but it is convenient for us)
+    return fetch(DATA_URL_ENDPOINT_THAT_RETURNS_JSON)
+      .then(response => response.json())
+      .then(json =>
+        // We can dispatch many times!
+        dispatch(receiveLocations(json))
+      );
+  };
+}
+
+export function isLoaded(globalState) {
+  return globalState.locations && globalState.locations.loaded;
+}
+
+// No need to call the external API if data is already in memory:
+export function fetchLocationsIfNeeded() {
+  return (dispatch, getState) => {
+    if ( isLoaded(getState()) ) {
+      // Let the calling code know there's nothing to wait for.
+      return Promise.resolve();
+    } else {
+      // Dispatch a thunk from thunk!
+      return dispatch(fetchLocations());
+    }
+  };
+}
+
+```
+
+A nice feature to this pattern is we dispatch the `receiveLocations()` action once data is received from the API. That forces a state change which causes our components to re-render, updating the view.
+
+With the new locations module written, and everything already setup in EXAMPLE 1 to handle this new locations reducer. All we have to do is now connect to this part of the store in our main `<App />` component.
+
+```js
+// src/containers/app.js
+
+// Import dependencies:
+import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+// Import actions from locations module for hydrating redux
+// store with data from server:
+import * as LocationActions from '../redux/modules/locations';
+
+// Import toggle() action from show_filters redux module:
+import {toggle as showFiltersToggle} from '../redux/modules/show_filters';
+
+// Import components:
+import ShowFiltersLink from '../components/show_filters_link';
+import LocationList from '../components/location_list';
+
+class App extends Component {
+  // Make sure we call the API endpoint before our component is mounted:
+  componentWillMount() {
+    const {dispatch} = this.props;
+
+    // Bind redux actions to dispatch():
+    const actions = bindActionCreators({ ...LocationActions }, dispatch)
+
+    // Call action:
+    actions.fetchLocationsIfNeeded();
+  }
+
+  render() {
+    // Now also listen for locations as props:
+    const {
+      locations,
+      showFilters,
+      dispatch
+    } = this.props;
+
+    // Bind redux actions to dispatch()
+    const actions = bindActionCreators({
+      showFiltersToggle
+    }, dispatch)
+
+    return (
+      <div className="app-wrapper locations-wrapper">
+        <section className="location-filters-section">
+          // Pass down showFilters as well as the toggle() action as props:
+          <ShowFiltersLink showFilters={showFilters} actions={actions} />
+        </section>
+
+        <section className="content-section">
+          // Pass down locations as props:
+          <LocationList locations={locations} />
+        </section>
+      </div>
+    );
+  }
+
+}
+
+// Connect to redux store and map to props
+export default connect(
+  state => ({
+    locations: state.locations,
+    showFilters: state.showFilters
+  })
+)(App);
+
+```
 
 ## EXAMPLE 3: Filtering that Fetched Data
 
-Hi
+What if we want to filter any of our existing data? For that you use [reselect](https://rackt.github.io/redux/docs/recipes/ComputingDerivedData.html).
+
+Reselect allows you to create memoized selectors that only update when the sections of the store that it is listening to are updated.
+
+In the example of filtering locations:
+
+```js
+// src/redux/selectors/locations_selector.js
+
+import { createSelector } from 'reselect';
+
+// The function that receives the updated locations from the
+// locationsSelector and ultimately filters those locations:
+
+function filterLocations(locations) {
+  return locations.data.filter(function(location) {
+    // FILTER YOUR LOCATIONS!
+  });
+}
+
+
+// FROM THE DOCS: Input-selectors should be used to abstract away
+// the structure of the store in cases where no calculations are
+// needed and memoization wouldn't provide any benefits.
+
+const locationsSelector = state => state.locations;
+
+
+// FROM THE DOCS: In filteredLocationsSelector, input-selectors are
+// combined to derive new information. To prevent expensive recalculation
+// of the input-selectors memoization is applied. Hence, these selectors
+// are only recomputed when the value of their input-selectors change.
+// If none of the input-selectors return a new value, the previously
+// computed value is returned.
+
+export const filteredLocationsSelector = createSelector(
+  locationsSelector,
+  filterLocations
+);
+```
+
+Now all we have to do is tell the `<App />` component to listen to the filteredLocationsSelector instead of the locations part of the store.
+
+```js
+// src/containers/app.js
+
+.......
+
+// Import selectors:
+import { filteredLocationsSelector } from '../redux/selectors/locations_selector';
+
+class App extends Component {
+
+.......
+
+}
+
+// Connect to redux store and map to props now using the
+// filteredLocationsSelector()
+export default connect(
+  state => ({
+    locations: filteredLocationsSelector(state),
+    showFilters: state.showFilters
+  })
+)(App);
+
+```
 
 ## Tutorials/Docs/Guides
 
