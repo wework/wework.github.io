@@ -39,7 +39,7 @@ Problem with this is, it's super specific, it's not the most reusable piece of c
 
 What if we had access to a boolean that told us whether we should show or hide the hidden filters container? Our React components would listen to that boolean so it would know what to display, then our link component would simply dispatch an action that would toggle that boolean when clicked.
 
-Quick flux refresher from their docs:
+Quick flux refresher from their [docs](https://facebook.github.io/flux/docs/overview.html):
 
 ![Flux Chart](https://facebook.github.io/flux/img/flux-simple-f8-diagram-explained-1300w.png)
 
