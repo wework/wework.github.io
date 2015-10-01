@@ -1,19 +1,17 @@
 ---
 layout:       post
-title:        React Tutorial - From Flux (Reflux) to Redux
+title:        React Tutorial - Converting Reflux to Redux
 author:       Matt Star
 summary:
 image:        http://res.cloudinary.com/wework/image/upload/s--xpIlilub--/c_scale,q_jpegmini:1,w_1000/v1443207604/engineering/shutterstock_294201896.jpg
 categories:   process
 ---
 
-There are many great tutorials and boilerplate apps online--linked to in the footer of this post--and even documentation for redux and react itself is fantastic, so for the purposes of this tutorial I'd like to focus on purely how we switched from using reflux to redux in production. You don't necesarilly need a background in Reflux or Redux to understand what's going on, but at least a working knowledge of React is recommended--bonus points for [flux](https://facebook.github.io/flux/docs/overview.html) knowledge as well. This tutorial was initilly written to onboard other WeWork engineers, hence its density, and is intended for beginners and experts alike.
+There are many great tutorials and boilerplate apps online--linked to in the footer of this post--and even documentation for redux and react itself is fantastic, so for the purposes of this tutorial I'd like to focus on purely how we switched from using reflux to redux in production. You don't necesarilly need a background in Reflux or Redux specifically to understand what's going on, but at least a working knowledge of React and [Flux](https://facebook.github.io/flux/docs/overview.html) is recommended.
 
-Over the last week or so we took the time to convert our ES5 React Reflux implementation of our [location's flow](https://www.wework.com/locations/new-york-city) into a brand spanking new ES6/7 React ***Redux*** implemenation. We'll go over 3 important examples in our data flow: saving the state of the ui in a store, fetching data from an external API to hydrate our store, and filtering data that is already in our store. This might be redundant, but you'll also get some transitioning from ES5 to ES6/ES7 bonus tips.
+Over the last week or so we took the time to convert our ES5 React Reflux implementation of our [location's flow](https://www.wework.com/locations/new-york-city) into a brand spanking new ES6/7 React ***Redux*** implemenation. We'll go over 3 important examples in our data flow: saving the state of the ui in a store, fetching data from an external API to hydrate our store, and filtering data that is already in our store. This might be redundant, but you'll also get some transitioning from ES5 to ES6/ES7 examples built in.
 
 ## EXAMPLE 1: Store the State of your UI in your...Store
-
-One of the best parts or React, or any componentized framework for that matter is that it's a *declarative* framework--"telling the  'machine' what you would like to happen, and let the computer figure out how to do it"--vs an *imperative* framework--"telling the machine how to do something, and as a result what you want to happen will happen" ([source](http://latentflip.com/imperative-vs-declarative/)).
 
 Let's think about something as simple as hiding or showing extra filters in a list application.
 
@@ -27,7 +25,7 @@ Going from a state where most of the location filters are hidden, with a link th
 
 ### jquery - the old standby:
 
-In an *imperative* example using jquery you could have a listener to that specific link, and when it's clicked have it toggle the hidden filters container:
+Using jQuery you could have a listener to that specific link, and when it's clicked have it toggle the hidden filters container:
 
 ```js
 $(".toggle-filters-link").click(function() {
@@ -37,17 +35,19 @@ $(".toggle-filters-link").click(function() {
 
 Problem with this is, it's super specific, it's not the most reusable piece of code in the world, and it usually just gets dumped into a compiled application.js file that will be hard to find in a production level codebase.
 
-How can we do better???
-
-Let's now look at the more *declarative* example with our initial Reflux implementation.
-
 ### Reflux - the first attempt:
 
-What if we had access to a boolean that told us whether we should show or hide the hidden filters container? Our React components would listen to that boolean so it would know what to display (...*declarative*), then our link component would simply dispatch an action that would toggle that boolean when clicked.
+What if we had access to a boolean that told us whether we should show or hide the hidden filters container? Our React components would listen to that boolean so it would know what to display, then our link component would simply dispatch an action that would toggle that boolean when clicked.
+
+Quick flux refresher from their docs:
+
+![Flux Chart](https://facebook.github.io/flux/img/flux-simple-f8-diagram-explained-1300w.png)
 
 Following the [Reflux pattern](https://github.com/reflux/refluxjs), let's declare an action--showFiltersActions--to tell the store that we want to toggle the state of "showFilters", and let's create a single store--showFiltersStore--to hold the record of this state.
 
 ```js
+
+////////// ACTION: //////////
 // src/actions/show_filters_actions.js
 var ShowFiltersActions = {};
 ShowFiltersActions.toggle = Reflux.createAction();
@@ -55,6 +55,7 @@ module.exports = ShowFiltersActions;
 
 
 
+////////// STORE: //////////
 // src/stores/show_filters_store.js
 var ShowFiltersActions = require('../actions/show_filters_actions');
 
@@ -165,10 +166,10 @@ module.exports = LocationFilters;
 I know this might seem like overkill essentially replacing 3 lines of jquery and a few lines of html with 4 different files between the actions, stores, and components, but this method actually leads to cleaner more reusable--and in my opinion more readable--code, as you start to extend the functionality of your application. What if you wanted to carry the state of your UI through multiple pages on your application? How do you handle reloads? React allows you to handle this complexity in a structured *declarative* manner.
 
 
-But this tutorial isn't about why you should use React. What about Reflux???
+But this tutorial isn't about why you should use Reflux...
 
 
-### Redux - Finally:
+### Redux:
 
 When you start building larger production level applications that require many types of stores and a more complex data model, reflux can start to feel a little bloated (TERRIBLE PUN). Redux is a natural successor to reflux (and other flux patterns in general).
 
@@ -190,7 +191,7 @@ Let's look at the Redux implementation of our showFiltersLink.
 A few caveats before diving into the new code:
 
  * We adopted the [ducks/modules](https://github.com/erikras/ducks-modular-redux) pattern from the [The React/Redux/HotReloader Boilerplate app](https://github.com/erikras/react-redux-universal-hot-example) when building our Redux actions and reducers. This is why our implementation might look slightly different from those in the Redux docs.
- * As we went through the process of converting Reflux to Redux we also updated our code to the new ES6 syntax.
+ * As we went through the process of converting Reflux to Redux we also updated our code to ES6.
 
 #### Redux: Building a module
 
@@ -199,7 +200,7 @@ The single store concept can seem a little strange coming from the reflux world.
 ```js
 {
   showFilters: true,
-  locations [
+  locations: [
     { name: "Bryant Park" },
     { name: "42nd St"},
     etc...
@@ -265,7 +266,7 @@ export default combineReducers({
 
 // {
 //   showFilters: true,
-//   locations [
+//   locations: [
 //     { name: "Bryant Park" },
 //     { name: "42nd St"},
 //     etc...
@@ -513,7 +514,7 @@ export function fetchLocationsIfNeeded() {
 
 A nice feature to this pattern is we dispatch the `receiveLocations()` action once data is received from the API. That forces a state change which causes our components to re-render, updating the view.
 
-With the new locations module written, and everything already setup in EXAMPLE 1 to handle this new locations reducer. All we have to do is now connect to this part of the store in our main `<App />` component.
+With the new locations module written, and everything already setup in EXAMPLE 1 to handle this new locations reducer, all we have to do is now connect to this part of the store in our main `<App />` component.
 
 ```js
 // src/containers/app.js
