@@ -44,50 +44,34 @@ A few things to remember:
 
 The BEM methodology has been very useful within our React components. Seeing as we're already creating objects that are wholey reuseable across the site, it only seems natural to make sure that our CSS is as concise.
 
-I was recently creating a new React component for our "Book a Tour" modal, called LocationCmInfo ("Cm" standing for Community Manager, the person giving the tour.)
+I was recently creating a new React component for our "Book a Tour" modal, called LocationInfo.
+
+![LocationInfo](http://res.cloudinary.com/wework/image/upload/s--GZLhgids--/fl_progressive,q_jpegmini:1/v1445109698/engineering/bem-react-locationinfo.jpg)
 
 
-```js
-import React, {Component, PropTypes} from 'react';
-
-class LocationCmInfo extends Component {
-  render() {
-    const { actions, selectedLocation } = this.props;
-
-    return (
-      <div className="modal__content clearfix">
-        <div className="location-cm-info">
-          <div className="location-cm-info__content">
-            <div className="modal__exit" onClick={actions.modalsFlush}>&#215;</div>
-            <div className="location-cm-info__image">
-              <img src={selectedLocation.community_manager.image_url} />
-            </div>
-            <div className="location-cm-info__text">
-              <h1 className="apercu">Come visit us!</h1>
-              <h2 className="apercu">{selectedLocation.name} - {selectedLocation.line1}</h2>
-              <p>{selectedLocation.community_manager.name} is a Community Manager at {selectedLocation.name} and will give you a tour of the building.</p>
-            </div>
-          </div>
-        </div>
+```html
+<div className="modal__content clearfix">
+  <div className="location-info">
+    <div className="location-info__content">
+      <div className="location-info__image">
+        <img src="<image url here>" />
       </div>
-    )
-  }
-}
-
-LocationCmInfo.propTypes = {
-  actions: PropTypes.object.isRequired,
-  selectedLocation: PropTypes.object.isRequired
-};
-
-export default LocationCmInfo;
+      <div className="location-info__text">
+        <h1 className="apercu">Come visit us!</h1>
+        <h2 className="apercu">42nd Street - 205 E 42nd St</h2>
+        <p>Jacquie Dershowitz is a Community Manager at 42nd Street and will give you a tour of the building.</p>
+      </div>
+    </div>
+  </div>
+</div>
 ```
 
-The markup is incredibly readable and easy to comprehend. We have a block (`.location-cm-info`) that contains an element (`.location-cm-info__content`) containing 2 other elements (`.location-cm-info__image` and `.location-cm-info__text`.) There are no modifiers yet.
+The markup is incredibly readable and easy to comprehend. We have a block (`.location-info`) that contains an element (`.location-info__content`) containing 2 other elements (`.location-info__image` and `.location-info__text`.) There are no modifiers yet.
 
 I was taking a look at this the other day and realized that **this CSS could use a little refactoring**:
 
 ```sass
-.location-cm-info {
+.location-info {
   &__content {
     position: relative;
     background-color: $syracuse;
@@ -134,20 +118,19 @@ I was taking a look at this the other day and realized that **this CSS could use
 }
 ```
 
-I've been breaking my own rule: "Do not use HTML elements in selectors."  Let's first refactor the markup and change the stylesheet accordingly. First of all, I would like to rename this component `.location-info` and add a modifier `--with-cm` to clarify that this module can be used for more than just highlighting a Community Manager.
-
+I've been breaking my own rule: "Do not use HTML elements in selectors."  Let's first refactor the markup and change the stylesheet accordingly. First of all, I would like to add a modifier `--with-image` to clarify that this module can be used without an image as well.
 
 
 ```html
-<div className="location-info--with-cm">
+<div className="location-info--with-image">
   <div className="location-info__content">
     <div className="location-info__image-container">
-      <img className="location-info__image" src={selectedLocation.community_manager.image_url} />
+      <img className="location-info__image" src="<image url here>" />
     </div>
     <div className="location-info__text-container">
       <h1 className="location-info__header apercu">Come visit us!</h1>
-      <h2 className="location-info__subheader apercu">{selectedLocation.name} - {selectedLocation.line1}</h2>
-      <p className="location-info__paragraph">{selectedLocation.community_manager.name} is a Community Manager at {selectedLocation.name} and will give you a tour of the building.</p>
+      <h2 className="location-info__subheader apercu">42nd Street - 205 E 42nd St</h2>
+      <p className="location-info__paragraph">Jacquie Dershowitz is a Community Manager at 42nd Street and will give you a tour of the building.</p>
     </div>
   </div>
 </div>
@@ -201,16 +184,16 @@ $module: 'location-info';
     font-size: 11px;
   }
 
-  // .location-info--with-cm
-  &--with-cm {
-    // .location-info--with-cm .location-info__content
+  // .location-info--with-image
+  &--with-image {
+    // .location-info--with-image .location-info__content
     .#{$module}__content {
       background-color: $syracuse;
       @media #{$medium-up} { padding: 45px; }
       @media #{$small-only} { padding: 30px 25px; }
     }
 
-    // .location-info--with-cm .location-info__image-container
+    // .location-info--with-image .location-info__image-container
     .#{$module}__image-container {
       border-radius: 50%;
       overflow: hidden;
@@ -227,7 +210,7 @@ $module: 'location-info';
       }
     }
 
-    // .location-info--with-cm .location-info__image
+    // .location-info--with-image .location-info__image
     .#{$module}__image { 
       width: 100px; 
       height: 100px; 
@@ -239,8 +222,8 @@ $module: 'location-info';
 ###What did I change?
 
 - Brought in the useful aspect of SASS that allows us to define and interpolate variables (by using: `$module: 'location-info'`). (see an example of this implementation in [Support for BEM modules in Sass 3.3](http://mikefowler.me/2013/10/17/support-for-bem-modules-sass-3.3/)) This came in handy when styling elements within my modifier.
-- Moved `.location-info__image` into the modifier `.location-info--with-cm`, **assuming** that in the future, we will not be using an image in our location-info components unless we are displaying the CM's information along with it. Who knows, maybe we *will* want to refactor this in the future, to allow for other types of images to be displayed in our location-info components. But that would just be a simple addition of `.location-info .location-info_image-container` with its own properties. And best of all, that **won't affect** the styles for location-info components with the class `.location-info--with-cm`.
-- Moved specific styles for `.location-info__content` to nest under `.location-info--with-cm`, as I doubt that these styles will be used for full-width page view of a LocationInfo component without a CM image. (ie. We probably won't want a gray (`$syracuse`) background when we use LocationInfo without the CM image.)
+- Moved `.location-info__image` into the modifier `.location-info--with-image`, **assuming** that in the future, we will not be using an image in our location-info components.
+- Moved specific styles for `.location-info__content` to nest under `.location-info--with-image`, as I doubt that these styles will be used for full-width page view of a LocationInfo component without an image. (ie. We probably won't want a gray (`$syracuse`) background when we use LocationInfo without the image.)
 - Added `.location-info__text-container`, `.location-info__header`, `.location-info__subheader`, and `.location-info__paragraph`.
 
 
@@ -252,8 +235,8 @@ Immediately, my CSS is more readable, not relying on HTML elements, and context-
   <div className="location-info__content">
     <div className="location-info__text-container">
       <h1 className="location-info__header apercu">Come visit us!</h1>
-      <h2 className="location-info__subheader apercu">{selectedLocation.name} - {selectedLocation.line1}</h2>
-      <p className="location-info__paragraph">{selectedLocation.name} is a great place to work. We have amenities such as {selectedLocation.amenities}.</p>
+      <h2 className="location-info__subheader apercu">42nd Street - 205 E 42nd St</h2>
+      <p className="location-info__paragraph">42nd Street is a great place to work. We have amenities such as community managers, high speed internet, and printing services.</p>
     </div>
   </div>
 </div>
