@@ -22,7 +22,7 @@ hello_bar: 5a9be6e710af44d4d730cfd1b4d291233f0f7fde
 google_analytics: UA-4260314-5
 
 # Optional features
-animated:           true
+animated:           false
 show_related_posts: true
 show_post_footers:  false
 
