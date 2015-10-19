@@ -1,5 +1,6 @@
 ## TLDR;
 
+- gem install jekyll
 - gem install bundler
 - bundle
 - bundle exec jekyll serve --watch --drafts
