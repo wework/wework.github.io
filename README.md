@@ -21,7 +21,7 @@ $ gem install jekyll
 If it tells you that you don't have write permissions:
 
 ```
-➜  _posts git:(master) ✗ gem install jekyll
+➜  wework.github.io git:(master) ✗ gem install jekyll
 ERROR:  While executing gem ... (Gem::FilePermissionError)
     You don't have write permissions for the /usr/bin directory.
 ```
@@ -29,15 +29,15 @@ ERROR:  While executing gem ... (Gem::FilePermissionError)
 Then use a newer version of ruby ([see](https://github.com/jekyll/jekyll/issues/2125)):
 
 ```
-➜  _posts git:(master) ✗ rbenv versions
+➜ wework.github.io git:(master) ✗ rbenv versions
 * system (set by /usr/local/opt/rbenv/version)
   2.0.0-p647
   2.1.2
   2.1.5
   2.1.6
   2.2.2
-➜  _posts git:(master) ✗ rbenv local 2.2.2
-➜  _posts git:(master) ✗ gem install jekyll
+➜ wework.github.io git:(master) ✗ rbenv local 2.2.2
+➜ wework.github.io git:(master) ✗ gem install jekyll
 Fetching: jekyll-watch-1.3.0.gem (100%)
 ...
 ```
