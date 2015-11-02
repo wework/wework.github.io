@@ -18,6 +18,29 @@ If you don't have Jekyll already installed, you will need to go ahead and do tha
 $ gem install jekyll
 ```
 
+If it tells you that you don't have write permissions:
+
+```
+ERROR:  While executing gem ... (Gem::FilePermissionError)
+    You don't have write permissions for the /usr/bin directory.
+```
+
+Then use a newer version of ruby ([see](https://github.com/jekyll/jekyll/issues/2125)):
+
+```
+➜  _posts git:(master) ✗ rbenv versions
+* system (set by /usr/local/opt/rbenv/version)
+  2.0.0-p647
+  2.1.2
+  2.1.5
+  2.1.6
+  2.2.2
+➜  _posts git:(master) ✗ rbenv local 2.2.2
+➜  _posts git:(master) ✗ gem install jekyll
+Fetching: jekyll-watch-1.3.0.gem (100%)
+...
+```
+
 #### Verify your Jekyll version
 
 It's important to also check your version of Jekyll since this project uses Native Sass which
