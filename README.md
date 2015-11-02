@@ -21,6 +21,7 @@ $ gem install jekyll
 If it tells you that you don't have write permissions:
 
 ```
+➜  _posts git:(master) ✗ gem install jekyll
 ERROR:  While executing gem ... (Gem::FilePermissionError)
     You don't have write permissions for the /usr/bin directory.
 ```
