@@ -21,7 +21,7 @@ $ gem install jekyll
 If it tells you that you don't have write permissions:
 
 ```
-➜  wework.github.io git:(master) ✗ gem install jekyll
+➜ wework.github.io git:(master) ✗ gem install jekyll
 ERROR:  While executing gem ... (Gem::FilePermissionError)
     You don't have write permissions for the /usr/bin directory.
 ```
