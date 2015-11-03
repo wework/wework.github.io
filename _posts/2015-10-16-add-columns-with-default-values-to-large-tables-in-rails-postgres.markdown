@@ -3,7 +3,7 @@ layout:       post
 title:        Rails Migration - How to add columns with default values to really large tables in Postgres + Rails
 author:       Sai Wong
 summary:
-image:        http://res.cloudinary.com/wework/image/upload/s--xpIlilub--/c_scale,q_jpegmini:1,w_1000/v1443207604/engineering/shutterstock_294201896.jpg
+image:        http://res.cloudinary.com/wework/image/upload/s--GnhXQxhq--/c_scale,q_jpegmini:1,w_1000/v1445269362/engineering/shutterstock_262325693.jpg
 categories:   data
 ---
 
@@ -145,6 +145,9 @@ end
 
 ## Possible alternate solution
 - Handle NULL case in code to treat as the desired default value
+  - Clean solution and quick turn around but required us to muck up the model to abstract out that case. Give that we may or may not have complete control over how that those values are extracted from the model, this may turn into lots of defensive code.
 - Add view in database to do mapping for us
+  - Very clean solution though this would require us to maintain both the schema and the view whenever we do schema changes on to that table. Though we don't do changes on the schema often on this table, the extra maintance overhead was deemed not worth the value.
 - Add trigger to only update rows that are actively queried
-- ???
+  - Also very clean solution though it came down to data integrity and since our data eventually gets slurped up by our data team, having a sane state on our data was highest priority. This meant that having a NULL state on a Boolean was not desired. Ultimately, we could of added the trigger to handle any current requests and just made the migration run slowly to backfill lesser accessed rows. Since we were able to run the entire migration within a night, we decided it wasn't worth the additional hassle.
+
