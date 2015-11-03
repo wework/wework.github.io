@@ -13,6 +13,10 @@ best but for us, the fun only just started. The table in question was a fairly
 large table with lots of reads on it and in the spirit of no down time, this
 is the adventure we had.
 
+# TL:DR;
+
+Jump straight to the [solution](#attempt-3)!
+
 # The Task
 - Add two columns to the notifications table
 - Both columns have default values
