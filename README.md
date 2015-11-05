@@ -33,6 +33,8 @@ $ jekyll -v
 Then, start the Jekyll Server. I always like to give the `--watch` option so it updates the generated HTML when I make changes.
 
 ```
+$ gem install bundler
+$ bundle
 $ bundle exec jekyll serve --watch --drafts
 ```
 
