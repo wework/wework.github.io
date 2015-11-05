@@ -7,11 +7,7 @@ image:        http://res.cloudinary.com/wework/image/upload/s--GnhXQxhq--/c_scal
 categories:   data
 ---
 
-We had a fairly simple task of adding a couple of columns to a table for our
-Rails app. This is normally a straight forward operation and a boring task at
-best but for us, the fun only just started. The table in question was a fairly
-large table with lots of reads on it and in the spirit of no down time, this
-is the adventure we had.
+We had a fairly simple task of adding a couple of columns to a table for our Rails app. This is normally a straight forward operation and a boring task at best, but for us the fun only just started. The table in question was a fairly large table with lots of reads on it and in the spirit of no down time, this is the adventure we had.
 
 ## TL:DR;
 
@@ -40,7 +36,7 @@ end
 ### Reason
 - Column creation with default values causes all rows to be touched at the same time
 - Updates are a slow operation in Postgres since it has to guarantee consistency
-- That guarantee results in whole table locking
+- That guarantee results in locking the entire table
 
 ### Solution
 - Postgres can create null columns extremely fast! Even on a huge table!
@@ -83,15 +79,15 @@ end
 
 ### Reason
 - Rails migration tasks are always wrapped in a transaction to allow for rollbacks
-- The column adds AND the row updates are in one gigantic transaction!
+- Adding the new column AND updating the rows are in one gigantic transaction!
 - Transactions guarantee consistency
-- That guarantee results in whole table locking again!
+- That guarantee results in the whole table locking again!
 
 ### Solution
-- You can disable the transaction handle in Rails migration by calling “disable_ddl_transaction!” in your migration task
+- You can disable the transaction handle in Rails migrations by calling “disable_ddl_transaction!” in your migration task
 - But you have to handle transactions on your own
 - We can then run each step in its own transaction
-- Add our own error handling to rollback operation
+- And add our own error handling to the rollback operation
 
 ## Attempt #3
 
@@ -148,10 +144,9 @@ end
 - Leverage Postgres features
 
 ### Possible alternate solution
-- Handle NULL case in code to treat as the desired default value
-  - Clean solution and quick turn around but required us to muck up the model to abstract out that case. Give that we may or may not have complete control over how that those values are extracted from the model, this may turn into lots of defensive code.
-- Add view in database to do mapping for us
-  - Very clean solution though this would require us to maintain both the schema and the view whenever we do schema changes on to that table. Though we don't do changes on the schema often on this table, the extra maintance overhead was deemed not worth the value.
-- Add trigger to only update rows that are actively queried
-  - Also very clean solution though it came down to data integrity and since our data eventually gets slurped up by our data team, having a sane state on our data was highest priority. This meant that having a NULL state on a Boolean was not desired. Ultimately, we could of added the trigger to handle any current requests and just made the migration run slowly to backfill lesser accessed rows. Since we were able to run the entire migration within a night, we decided it wasn't worth the additional hassle.
-
+- Handle NULL case in code to treat as the desired default value:
+  - Clean solution and quick turn around, but it required us to muck up the model to abstract out that case. Given that we may or may not have complete control over how those values are extracted from the model, this may turn into lots of defensive code.
+- Add view in database to do mapping for us:
+  - Very clean solution though this would require us to maintain both the schema and the view whenever we do schema changes to that table. Though we don't do changes to the schema often in this table, the extra maintance overhead was deemed not worth the value.
+- Add trigger to only update rows that are actively queried:
+  - Also very clean solution though it came down to data integrity and since our data eventually gets consumed by our data team, having a sane state on our data was highest priority. This meant that having a NULL state on a Boolean was not desired. Ultimately, we could have added the trigger to handle any current requests and just made the migration run slowly to backfill less frequently accessed rows. Since we were able to run the entire migration within a night, we decided it wasn't worth the additional hassle.
