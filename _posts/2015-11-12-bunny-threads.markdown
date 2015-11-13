@@ -53,7 +53,7 @@ Since the threads act on the same instance and memory space as the singular work
 ### Sharing the Pool for Fun and Profit
 With each thread using the same instance memory space of the same worker, that means that our caching of the Bunny connection and channel will not do. The documentation on Bunny provides more insight:
 
-http://rubybunny.info/articles/concurrency.html#sharing_channels_between_threads
+[http://rubybunny.info/articles/concurrency.html#sharing_channels_between_threads](http://rubybunny.info/articles/concurrency.html#sharing_channels_between_threads)
 
 So the docs say that we can share the connection but channels are a definite no-go. Since our event publishing code was wrapped in a utility gem used by many different applications, we wanted to devise a solution that was backwards compatible. Since the channel requested can be used by both publishing and subscribing, it was not feasible for us to use an ephemeral channel implementation since we don’t want to accidentally close a channel used for subscribing. The solution we came up with was to simply pool our opened channels. Luckily there’s a great `connection_pool` gem that does exactly that and allows us to abstract that out cleanly:
 
@@ -73,11 +73,11 @@ The result of deploying that change? All `ConnectionClosedError` and `Unexpected
 When writing Ruby, we sometimes take advantage of the single threaded nature of the environment and forget some of the pitfalls of being thread safe. When using servers such as Puma that allow us to take advantage of thread to maximize on performance, we found an issue with our Bunny implementation. The issue was identified as a documented inability for Bunny channels to be shared across threads and we developed a solution to address the issue. The main take away here, read the documentation regardless of how dry it is!
 
 ### Related Links
-1. https://www.rabbitmq.com/
-2. http://unicorn.bogomips.org/
-3. https://bearmetal.eu/theden/how-do-i-know-whether-my-rails-app-is-thread-safe-or-not/
-4. http://puma.io/
-5. http://rubybunny.info/
-6. http://rubybunny.info/articles/concurrency.html#sharing_channels_between_threads
-7. http://reference.rubybunny.info/Bunny/Channel.html
-8. https://github.com/mperham/connection_pool
+1. [https://www.rabbitmq.com/](https://www.rabbitmq.com/)
+2. [http://unicorn.bogomips.org/](http://unicorn.bogomips.org/)
+3. [https://bearmetal.eu/theden/how-do-i-know-whether-my-rails-app-is-thread-safe-or-not/](https://bearmetal.eu/theden/how-do-i-know-whether-my-rails-app-is-thread-safe-or-not/)
+4. [http://puma.io/](http://puma.io/)
+5. [http://rubybunny.info/](http://rubybunny.info/)
+6. [http://rubybunny.info/articles/concurrency.html#sharing_channels_between_threads](http://rubybunny.info/articles/concurrency.html#sharing_channels_between_threads)
+7. [http://reference.rubybunny.info/Bunny/Channel.html](http://reference.rubybunny.info/Bunny/Channel.html)
+8. [https://github.com/mperham/connection_pool](https://github.com/mperham/connection_pool)
