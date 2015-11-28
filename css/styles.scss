@@ -18,11 +18,43 @@
 
 .posts .post .post-image {
   min-height: 300px;
+  margin-bottom: 20px;
   // background-position: 50% 25%;
 }
 
+.author-block {
+  display: flex;
+  max-width: 500px;
+  padding: 20px;
+  margin: 20px 0;
+  background-color: #f7f7f7;
+
+  .gravatar {
+    margin-right: 15px;
+
+    img {
+      display: block;
+      border-radius: 50%;
+    }
+  }
+
+  .author-social {
+    padding-left: 10px;
+
+    .fa {
+      padding: 0 2px;
+      color: #666;
+    }
+  }
+
+  .author-summary {
+    margin-top: 10px;
+    font-size: 90%;
+  }
+}
 
 .share-links {
+  margin: 0 0 25px;
   .si {
     width: 30px;
     height: 30px;
