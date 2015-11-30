@@ -12,10 +12,10 @@ If you're completely new to Jekyll, I recommend checking out the documentation a
 
 ### Installing Jekyll
 
-If you don't have Jekyll already installed, you will need to go ahead and do that.
+If you don't have Jekyll already installed, you will need to go ahead and do that. I've had issues with 2.5.6 and the major ^3.0.1 upgrades.
 
 ```
-$ gem install jekyll
+$ gem install jekyll -v 2.4.0
 ```
 
 #### Verify your Jekyll version
@@ -41,6 +41,22 @@ Now you can navigate to `localhost:4000` in your browser to see the site.
 NOTE: passing the --drafts flag will also load all posts inside of the _drafts folder. This is
 useful when you are working on a post but are not ready to publish it yet.
 
+
+## Writing a Post
+
+Make sure to have all proper markup filled out at the top of your post to get that SEO boost.
+
+Here's a good example:
+```
+---
+layout:       post
+title:        Rabbits, Bunnies and Threads
+author:       Sai Wong
+summary:      When writing Ruby, we sometimes take advantage of the single threaded nature of the environment and forget some of the pitfalls of being thread safe. When using servers such as Puma that allow us to take advantage of thread to maximize on performance, we found an issue with our Bunny implementation. The issue was identified as a documented inability for Bunny channels to be shared across threads and we developed a solution to address the issue.
+image:        http://res.cloudinary.com/wework/image/upload/s--GnhXQxhq--/c_scale,q_jpegmini:1,w_1000/v1445269362/engineering/shutterstock_262325693.jpg
+categories:   ruby rails bunny rabbitmq threads concurrency puma errors
+---
+```
 
 ### Need a Cool Photo?
 

@@ -2,7 +2,7 @@
 layout:       post
 title:        Inside WeWork's Tech Stack
 author:       Matt Star
-summary:
+summary:      Take a tour through WeWork's tech stack from one of our Lead Software Engineers.
 image:        http://res.cloudinary.com/wework/image/upload/s--Y5EaKyFC--/c_scale,fl_progressive,q_jpegmini:2,w_1072/v1434404739/engineering/inside-weworks-tech-stack.jpg
 categories:   engineering
 ---

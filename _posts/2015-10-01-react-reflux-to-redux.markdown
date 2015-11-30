@@ -2,7 +2,7 @@
 layout:       post
 title:        React Tutorial - Converting Reflux to Redux
 author:       Matt Star
-summary:
+summary:      We converted our React Reflux code to React Redux, and switched over to using ES6 in the process. We'll go over how to save the state of the ui in a store, fetch data from an external API to hydrate our store, and filter data that is already in our store.
 image:        http://res.cloudinary.com/wework/image/upload/s--xpIlilub--/c_scale,q_jpegmini:1,w_1000/v1443207604/engineering/shutterstock_294201896.jpg
 categories:   process
 ---

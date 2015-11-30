@@ -2,7 +2,7 @@
 layout:       post
 title:        Caching External APIs in Rails for a Ginormous Speed Boost
 author:       Matt Star
-summary:
+summary:      How to use Rails Fragment Caching to cache external APIs.
 image:        http://res.cloudinary.com/wework/image/upload/s--unWFH26o--/c_fill,fl_progressive,g_north,h_1000,q_jpegmini,w_1600/v1430251626/engineering/caching-external-apis.jpg
 categories:   engineering
 ---
