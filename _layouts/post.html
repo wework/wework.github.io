@@ -2,9 +2,11 @@
 layout: default
 ---
 
+{% assign author = site.data.authors[page.author] %}
+
 {% assign minutes = content | number_of_words | divided_by: 180 %}
 {% if minutes == 0 %}
-{% assign minutes = 1 %}
+  {% assign minutes = 1 %}
 {% endif %}
 
 <div class="post-header mb2">
@@ -14,8 +16,8 @@ layout: default
   <h1>{{ page.title }}</h1>
   <div class="post-meta">
     <span class="post-date">{{ page.date | date: "%b %-d, %Y" }}</span>
-    {% if page.author %}
-      - <span class="post-author">{{page.author}}</span>
+    {% if author %}
+      - <span class="post-author">{{author.name}}</span>
     {% endif %}
     {% if page.update_date %}
       <div class="post-updated">Updated: {{ page.update_date | date: "%b %-d, %Y" }}</div>
@@ -26,6 +28,35 @@ layout: default
 
 <article class="post-content">
   {{ content }}
+
+  {% if author %}
+  <div class="author-block">
+    {% if author.gravatar_email %}
+    <div class="gravatar">
+      <img src="{{ author.gravatar_email | gravatar }}">
+    </div>
+    {% endif %}
+    <div class="author-info">
+      <div class="author-name">
+        Written by <strong>{{ author.name }}</strong>
+        {% if author.github %}
+        <span class="author-social">
+          <a class="si fa fa-github" href="{{author.github}}" rel="nofollow" target="_blank"></a>
+          {% endif %}
+          {% if author.twitter %}
+          <a class="si fa fa-twitter" href="{{author.twitter}}" rel="nofollow" target="_blank"></a>
+          {% endif %}
+        </span>
+      </div>
+      {% if author.summary %}
+      <div class="author-summary">
+        {{author.summary}}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
 </article>
 
 {% if site.show_sharing_icons %}
@@ -52,12 +83,11 @@ layout: default
 {% endif %}
 
 {% if site.show_related_posts and site.related_posts.size > 0 %}
-  <h3 class="related-post-title">Related Posts {{site.related_posts.size}}</h3>
+  <h4 class="related-post-title mt2">Related Posts {{site.related_posts.size}}</h4>
   {% for post in site.related_posts %}
-    <div class="post ml2">
+    <div class="post">
       <a href="{{ post.url | prepend: site.baseurl }}" class="post-link">
-        <h4 class="post-title">{{ post.title }}</h4>
-        <p class="post-summary">{{ post.summary }}</p>
+        <h5 class="post-title">{{ post.title }}</h5>
       </a>
     </div>
   {% endfor %}

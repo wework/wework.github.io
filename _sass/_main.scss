@@ -13,12 +13,16 @@
 
 */
 
-body {
-  font-family: "Merriweather", "PT Serif", Georgia, "Times New Roman", serif;
-}
-
 html, body {
   height: 100%;
+}
+
+body {
+  font-size: 1rem;
+  font-family: "Merriweather", "PT Serif", Georgia, "Times New Roman", serif;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 
 img {
@@ -38,14 +42,6 @@ img {
 
 .footer, .site-wrap:after {
   height: 120px;
-}
-
-body {
-  font-size: 1.5rem;
-
-          box-sizing: border-box;
-     -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
 }
 
 .gist,
@@ -445,24 +441,20 @@ h6,
 }
 
 @media screen and (min-width: 64em) {
-  .h1,
-  h1 {
-    font-size: 4.498rem;
+  .h1, h1 {
+    font-size: 3.5rem;
   }
 
-  .h2,
-  h2 {
-    font-size: 3.18rem;
+  .h2, h2 {
+    font-size: 3rem;
   }
 
-  .h3,
-  h3 {
-    font-size: 2.249rem;
+  .h3, h3 {
+    font-size: 2.5rem;
   }
 
-  .h4,
-  h4 {
-    font-size: 1.591rem;
+  .h4, h4 {
+    font-size: 1.5rem;
   }
 
   .posts .post-meta {
