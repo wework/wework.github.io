@@ -1,47 +1,33 @@
 ---
 layout:       post
 title:        Building Static Sites with React, Redux, Webpack, and Roots
-author:       Matt Star
+author:       matt_star
 summary:      Our main marketing site (wework.com) used to be a slow monolithic Rails app. This is how we converted it to use Roots, React, and Webpack and decreased our page load speed by over 50%.
 image:        http://res.cloudinary.com/wework/image/upload/s--xpIlilub--/c_scale,q_jpegmini:1,w_1000/v1443207604/engineering/shutterstock_294201896.jpg
-categories:   process
+categories:   engineering
 ---
 
-The WeWork Engineering team is made up of mostly Rails engineers. When we made the decision over a year ago to bring [wework.com](https://www.wework.com) in house it was a no brainer to use Rails--we could get up and running more quickly and have all engineers contribute to the project. However, as we've grown our team, experimented with new technologies ([React and Redux](/process/2015/10/01/react-reflux-to-redux/)), and grown as a company in size and scope, not only has our Rails app balooned into a monolithic headache, but we're starting to see increasing page load times--and as a consequence declining SEO and poor user experience. We needed to move off of Rails.
+If you read our [last post](http://engineering.wework.com/engineering/2015/12/08/why-wework-com-uses-a-static-generator-and-why-you-should-too/) you know all about why we decided to use a static site generator for the new wework.com. If you're also familiar with our [reflux to redux tutorial](http://engineering.wework.com/process/2015/10/01/react-reflux-to-redux/), you'll see that we use React and Redux to power the wework.com [Locations Flow](https://www.wework.com/locations/new-york-city/).
 
-We had three engineering requirements:
+## Server Side Rendering
 
-1. These pages need to be FAST.
-2. Create one off (potentially dynamic) landing pages as quickly as possible.
-3. Use React for our some of our more complicated views.
+Why is server side rendering so great? Here are two examples of our [New York City](https://www.wework.com/v2/locations/new-york-city/) page.
 
-## Go Static - Roots.cx
+**Without server side rendering:**
 
-For the first two requirements, we turned to the (Roots)[http://roots.cx/] static site generator. I'll let you dig into the docs, but we were able to create static compiled HTML/CSS/JS pages very quickly, and by having them hosted on a CDN (we use [Netlify](http://netlify.com/)) saw a massive page speed increase.
+![Location Flow Without Server Rendering](http://res.cloudinary.com/wework/image/upload/s--h0Dj3ybV--/c_scale,fl_progressive,q_jpegmini,w_1000/v1449600122/engineering/Screen_Shot_2015-12-08_at_1.37.19_PM.jpg)
 
-Roots takes all `.jade` files in your `/views` directory, and compiles them down to your `public` directory as raw html ready to be served.
+**With server side rendering:**
 
-You might be asking, wouldn't you see the same result by CDN caching the Rails app? Well, sorta! And that's what we did initially. However, as your site grows there are many issues that you'll start to run into.
+![](http://res.cloudinary.com/wework/image/upload/s--AxqGjxt---/c_scale,fl_progressive,q_jpegmini,w_1000/v1449600397/engineering/Screen_Shot_2015-12-08_at_1.45.52_PM.jpg)
 
-#### The Asset Pipeline
+When we initially built this flow, all of our React logic was being initialized through [ReactDOM.render](https://facebook.github.io/react/docs/top-level-api.html#reactdom.render). The page coming back from the server would be blank (just header and footer) and then when the DOM was ready, react would kick in and load the page accordingly. There are many great [tutorials and examples](https://github.com/DavidWells/isomorphic-react-example#other-isomorphic-tutorials--resources) on how to spin up a quick express server to render your components to string and output them as html. However, once we moved to a static site generator, we no longer had a server.
 
-This was our biggest issue by far. One of the biggest advantages of Rails is its ability to magically compile all your css/sass and js/coffeescript when you build your application up to heroku (or wherever you're hosting). However, what if you start building one off landing pages that don't need all the compiled css and js from application.css and application.js?
+## Static React Rendering
 
-We started by creating multiple layout files that only include the necessary JS and CSS, but that's not really what Rails was built to support. Now you're adding `layout: :INSERT_LAYOUT_FILE_NAME` into your controller actions and contributing to overall bloat.
+This isn't quite server side rendering, isomorphic react, universal react, or whatever you want to call it because we don't have a server. However, this still uses the same concepts as server side rendering. We use the same logic, but instead of doing it on an express server, we pass it through a Webpack static site generator plugin to compile the html and save it to our public folder. We took a lot of cues from this excellent [tutorial on creating static pages with React components](http://jxnblk.com/writing/posts/static-site-generation-with-react-and-webpack/). We're still working on a more ideal implementation, but it boils down to the following:
 
-Our next solution was experimenting with integrating webpack and React. At that point, you should just be building a node app rather than retrofitting Rails to do somthing it didn't intend to do in the first place.
-
-With Roots and static it was quite simple to only include the necessary Javascript and CSS to keep our pages as slim as possible.
-
-#### Server Side Rendering
-
-What if you want to use React in a Rails project? On our old Rails site we used React to build our [Locations flow](https://www.wework.com/locations/new-york-city/). The page coming back from the server would be blank (just header and footer) and then when the DOM was ready, react would kick in and load the page accordingly. All of our React logic was being compiled in Application.js so it was unfortunately only client side. This was probably the biggest reason we switched off of Rails and embraced static.
-
-## Static React
-
-This isn't quite server side rendering, isomorphic react, universal react, or whatever you want to call it because we don't have a server. However, this still uses the same concepts as server side rendering. Instead of allowing an Express server for example to render and serve the page, we use the same logic and pass it through a Webpack static site generator plugin to compile the html and save it to our public folder. We took a lot of cues from this excellent [tutorial on creating static pages with React components](http://jxnblk.com/writing/posts/static-site-generation-with-react-and-webpack/). We're still working on a more ideal implementation, but it boils down to the following:
-
-* Roots is responsible for compiling all non-react static pages
+* [Roots](http://roots.cx/) (our static site generator) is responsible for compiling all non-react static pages
 * Webpack is responsible for compiling all views that use react
 * webpack-dev-server is responsible for serving all pages (both roots and react) in development
 
