@@ -31,9 +31,9 @@ layout: default
 
   {% if author %}
   <div class="author-block">
-    {% if author.gravatar_email %}
+    {% if author.author_image %}
     <div class="gravatar">
-      <img src="{{ author.gravatar_email | gravatar }}">
+      <img src="{{ author.author_image }}">
     </div>
     {% endif %}
     <div class="author-info">
