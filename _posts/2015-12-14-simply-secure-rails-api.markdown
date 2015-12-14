@@ -1,10 +1,10 @@
 ---
 layout:       post
 title:        Simply Secure Rails API
-author:       Paul Franzen
-summary:
+author:       paul_franzen
+summary:      Ever needed a simple way to lock down an API?
 image:        http://res.cloudinary.com/wework/image/upload/s--Al86WVSb--/c_fill,fl_progressive,g_face:center,h_1000,q_jpegmini:1,w_1600/v1427921778/engineering/5-ways-to-create-bulletproof-software-bear.jpg
-categories:   rails, api, security
+categories:   rails, api, security, engineering
 ---
 
 If you're attempting to implement a service orientated architecture 
@@ -482,7 +482,7 @@ As with any security implementation, there are ways to make this more robust and
 You should always take your time and implement the system that is best for your needs and take into account what you're securing, 
 highly classified documents vs payment information vs access to profile information and make your decision appropriately.
 
-I hope you found this enlightening and happy lock downs!
+I hope you found this enlightening and many happy lock downs.
 
 ---
 
