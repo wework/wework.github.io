@@ -13,6 +13,7 @@ securing API endpoints.
 
 A simple (and obvious) solution is to make every request using an 
 API key or something like [Basic HTTP Authentication headers](https://en.wikipedia.org/wiki/Basic_access_authentication).
+
 Something like:
 
 Requesting APP (using the wonderful Faraday):
@@ -55,31 +56,67 @@ Receiving APP:
 This is a fine system, pleasingly simple and straight-forward.
 However, it misses one basic fact about these requests: Most of them 
 are made on behalf of the current user and not the requesting
-application. Enter OAuth.
+application. 
+
+So a posts controller like this:
+
+```ruby
+  module Api
+    module V1
+      class PostsController < ApplicationController
+        before_filter :restrict_access
+
+        def index
+          @posts = current_user.posts.page(1)
+          respond_with @posts
+        end
+
+        private
+
+        def restrict_access        
+          authenticate_or_request_with_http_token do |token, options|          
+            ApiKey.exists?(access_token: token)
+          end
+        end
+
+      end
+    end
+  end
+```
+
+Is, well, a little awkward. Because there's really no way to 
+know who the "current_user" is without passing in some extra variable.
+
+
+#### Enter OAuth.
 
 OAuth especially via [DoorKeeper](https://github.com/doorkeeper-gem/doorkeeper) 
-and [Omniauth](https://github.com/intridea/omniauth), is great, 
-but opening new windows, redirect URIs, tokens, and the funky 
+and [Omniauth](https://github.com/intridea/omniauth), is amazing, 
+but popping opening new windows (or mobile apps), redirect URIs, tokens, secrets, and the funky 
 user experience that often accompany them can be a bit too much
-ceremony, particularly if you're connecting two trusted applications, 
-often times sharing the same base domain.
+ceremony especially if you're connecting two trusted applications.
 
 #### Tokens to the rescue!
 
 Encrypting strings that can be later decrypted (usually obfuscated to a word: Token)
-is a concept oft hidden Wizard-Of-Oz style curtains within frameworks like Rails. 
+is a concept oft hidden by Wizard-Of-Oz style curtains within frameworks like Rails. 
 
-*Initialization Vectors*, *Ciphers*, fancy words and bad hacker nicknames, inspiring both dread and awe in the uninitiated. 
-But just like any good magic trick deciphering the slight of hand is both empowering and inspiring.
+Just Set some random ```secret_base_key``` and you're good to go!
 
-#### Scenario
+When you dig in, oh boy, *Initialization Vectors*, *Ciphers*, wacky words / bad hacker nicknames, inspiring both dread and awe in the uninitiated. 
+But just like any good magic trick deciphering the slight of hand is both empowering and inspiring. 
+
+So let's take a peek behind the curtain.
+
+#### Imagine a scenario
 
 ##### Application 1: 
 Our Authentication service (https://id.wework.io)
-In a more traditional architecture, this would be the OAuth provider
-This service has a login API. It uses [Devise](https://github.com/plataformatec/devise)
-to manage authentication. This application also utilizes CORS via [Rack CORs](https://github.com/cyu/rack-cors).
-Allowing the appropriate cross-origin access.
+In a more traditional architecture, this would be the OAuth provider.
+
+This service has a login API. For the sake of brevity, it uses [Devise](https://github.com/plataformatec/devise)
+to manage users and password. This application also utilizes CORS via [Rack CORs](https://github.com/cyu/rack-cors).
+Allowing appropriately configured cross-origin access.
 
 ##### It has a user model
 
@@ -152,32 +189,14 @@ end
 
 ##### Application 2: 
 Social Network (https://network.wework.io)
-A rails web app which uses the authentication service to log a user in and seed user data.
-It stores: users (like most OAuth apps), and posts.
+A rails web application which uses the aforementioned authentication service to log a user in and seed user data.
 
-##### Login Screen
+We want this application to log a user in, persist a "copy" of this user (like any standard OAuth app) and allow that user to create posts.
 
-```html
-  <html>
-    <head>
-      <title>Network</title>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    </head>
-    <body>
-      <form method="POST" action="https://id.wework.io/api/v1/login/">
-        <input type="text" name="email" placeholder="Email" />
-        <input type="password" name="password" placeholder="password" />
-        <input type="submit" value="submit" />
-      </form>
-    </body>
-  </html>
-```
-
-So, how do we get from these simple endpoints and actions, to a functioning ecosystem?
-I thought you'd never ask!
+#### Let's get started
 
 First you want to add a method to the authentication service's User Model. This method encrypts a
-user's uuid or any column that's unique (or a combination of columns for extra security).
+user's uuid.
 
 Using ruby's OpenSSL library
 
@@ -202,11 +221,8 @@ class User < ActiveRecord::Base
 end
 ```
 
-Anyone know what this method does? Anyone? Anyone?
-
-That's OK!!
-
-It's pretty much way outside the norm of "ordinary" MVC web development. So lets go through it line by line.
+Look at this bonkers method! It's pretty hard to figure out what's going on here. And to be fair it's outside 
+the norm of ordinary, MVC style web development. So lets go through it line by line.
 
 
 #### Line 1
@@ -218,21 +234,22 @@ The argument 'aes-256-cbc' is a hyphenated description of components of the ciph
 
 1. "aes" is the name of the encryption algorithm. In this case, its an acronym for [Advanced Encryption Standard](http://aesencryption.net/).
 
-2. 256 is the number of bits of the key used in the algorithm. You'll usually see 128 or 256. Practically, this just means that the key is "large" enough that it cannot be easily broken via a brute force attack. 
+2. 256 is the number of bits of the key used in the algorithm. You'll usually see 128 or 256. Practically, this means that the key is "large" enough that it cannot be feasibly broken via a brute force attack (it would take foooooorrreeeevvvveeeerrr) . 
 
-3. cbc stands for "cipher block chaining" and is the mode by which the aes algorithm encrypts the data. Its most commonly compared the ecb (electronic code book)[http://searchsecurity.techtarget.com/definition/Electronic-Code-Book]. 
-Its generally preferred to use cbc for encoding smaller things, because ebc may expose pieces of the real string in the encrypted string.
+3. cbc stands for "cipher block chaining" and is the mode by which the aes algorithm encrypts the data. Its most commonly compared to the ecb [electronic code book](http://searchsecurity.techtarget.com/definition/Electronic-Code-Book). 
+Its generally preferred to use cbc because ebc may expose pieces of the actual key in the encrypted string when encrypting smaller pieces of data. 
 
-Full documentation is available [here](http://docs.ruby-lang.org/en/trunk/OpenSSL/Cipher.html). 
+Anyway, like electricity, you needn't full understand these modes to use them.
+But full documentation is always [available](http://docs.ruby-lang.org/en/trunk/OpenSSL/Cipher.html). 
 
 ---
 
 #### Line 2
 ```ruby
-cipher.encrypt
+cipher.encrypt # cipher.decrypt
 ```
 
-This lets the cipher instance we defined before know that we intend to use it for encryption rather than decryption.
+Since you instantiate a "decipher" the same as a cipher, this line lets the instance know that we intend to use it for encryption rather than decryption.
 
 ---
 
@@ -242,8 +259,9 @@ cipher.key =  ENV['SOME_SECRET_KEY']
 ```
 
 OK, here's where it starts to get interesting. 
-This is basically the first part of the password that will shared between applications. 
+This is the first part of the password that we will shared between applications. 
 Its important to create a truly random (or as close to that as possible) key, so consult the [documentation](http://docs.ruby-lang.org/en/trunk/OpenSSL/Cipher.html#class-OpenSSL::Cipher-label-Choosing+a+key)
+to get something as secure as possible.
 
 ---
 
@@ -252,15 +270,15 @@ Its important to create a truly random (or as close to that as possible) key, so
 cipher.iv =  ENV['SOME_SECRET_IV']
 ```
 
-The iv here, well this stands for initialization vector. An initialization vector creates an extra layer of security around a key, and is generally used only once per instance of a cipher. 
+IV, well this stands for initialization vector. An initialization vector creates an extra layer of security around a key, and is generally used only once per instance of a cipher. 
 We're breaking the rules a little here, because our IV will be used only to prevent the accidental exposure of the key in the encrypted payload. 
 Consult the [documentation](http://docs.ruby-lang.org/en/trunk/OpenSSL/Cipher.html#class-OpenSSL::Cipher-label-Choosing+an+IV) to choose your IV.
 
 ---
 
-For both of these, as implied by the code, you'll want to store them outside of version control and in some sort of easily changeable way (such as an environment variable) in case the are ever compromised.
+For both of these, as implied by the code, you'll want to store them outside of version control and in some sort of easily changeable way in case they are ever compromised.
 
-You'll also want to use different values for each environment, i.e. development, staging, production.
+You'll also want to use different values for each environment, i.e. development, test, staging, production.
 
 ---
 
@@ -269,8 +287,9 @@ You'll also want to use different values for each environment, i.e. development,
 cipher.padding =  1
 ```
 
-This sets the cipher padding to 1. Just kidding, that would make too much sense! This ENABLES padding in the cipher. The short story is that the aes
-block cipher algorithm mentioned above requires its input to be and EXACT multiple of the block size. Read the full [documentation](http://ruby-doc.org/stdlib-1.9.3/libdoc/openssl/rdoc/OpenSSL/Cipher.html#method-i-padding-3D)
+This sets the cipher padding to 1 character. Just kidding! This is a boolean, which ENABLES padding in the cipher.  The short story is that the aes
+block cipher algorithm mentioned above requires its' input to be an EXACT multiple of the block size. Setting this to 1 allows for variance in the size of the data being encrypted. 
+If you're very interested: read the full [documentation](http://ruby-doc.org/stdlib-1.9.3/libdoc/openssl/rdoc/OpenSSL/Cipher.html#method-i-padding-3D)
 
 ---
 
@@ -278,8 +297,9 @@ block cipher algorithm mentioned above requires its input to be and EXACT multip
 ```ruby
 encrypted =  cipher.update(self.uuid) + cipher.final
 ```
-For practical purposes, this is a procedural event in the cipher's life-cycle. It returns the, you guessed it, final remaining data in the cipher object.
-Or in more sane terms, something that's ready to be deciphered. [Documentation](http://docs.ruby-lang.org/en/trunk/OpenSSL/Cipher.html#method-i-final)
+This takes the actual data you want to encrypt, in this case the user's 
+UUID, and turns is into something that's actually ready to be deciphered. For practical purposes, calling .final a procedural event in the cipher's life-cycle. 
+[Documentation](http://docs.ruby-lang.org/en/trunk/OpenSSL/Cipher.html#method-i-final)
 
 ---
 
@@ -287,15 +307,13 @@ Or in more sane terms, something that's ready to be deciphered. [Documentation](
 ```ruby
 Base64.urlsafe_encode64(encrypted).encode('utf-8')
 ```
-This is the actual return we want to transform the finalized cipher into so that it can be passed safely via a query string or form data. Only over SSL, of course :-)
+This is the actual data we want to transform the finalized cipher into so that it can be passed safely via a query string or form data. Only over SSL, of course :)
 
 ---
 
-### OK, lets put this to use.
+After our authentication application's user model has an encrypted method we can modify the: 
 
-Now that our user model has an encrypted method we can modify the authentication app's 
-
-##### Users controller
+##### Authentication Application's User's controller
 
 ```ruby
 module Api
@@ -317,58 +335,161 @@ module Api
 end
 ```
 
-Now that our authentication application is prepped to return encrypted uuids when provided a valid email and password we can alter our
+Now that our authentication application is prepped to return encrypted UUIDs (when provided a valid email and password), we
+can create our Social Networking application here's some boilerplate:
 
-##### Client application login screen
+##### Our Social Network's user class
 
+```ruby
+class User < ActiveRecord::Base
+  # Schema
+  # Name: string
+  # UUID: UUID (primary key)
+  # Email
+
+  def self.create_from_authentication_service(email, password)
+    begin
+      connection =  Faraday.new(url: "https://id.wework.io") do |faraday|
+                      faraday.adapter Faraday.default_adapter    
+                      faraday.headers['Content-Type'] = 'application/json'
+                    end
+
+      response = connection.post("/api/v1/login/", {
+                    email: email,
+                    password: password
+                  }.to_json)
+
+      parsed_body = JSON.parse(response.body)
+
+      User.create({
+        uuid:  parsed_body["user"]["uuid"],
+        email: parsed_body["user"]["email"],
+        name:  parsed_body["user"]["name"],
+      })
+    rescue 
+      false
+    end
+  end
+end
+```
+
+##### Our Social Network login controller
+
+```ruby
+class LoginController < ApplicationController
+  
+  def new # Get /login
+  end
+
+  def create  # Post/login
+
+    user = User.create_from_authentication_service(params[:email], params[:password])
+
+    if user
+      cookies.signed[:uuid] = user.uuid
+      redirect_to "some home", notice: "Great Success!"
+    else
+      redirect new_login_path, error: "Something went wrong!"
+    end
+  
+  end
+
+end
+
+```
+
+##### Our Social Network application controller
+
+```ruby
+class ApplicationController < ActionController::Base
+  
+  def current_user
+    @current_user ||= User.find_by(uuid: cookies.signed[:uuid])
+  end
+  helper_method :current_user
+
+end
+
+```
+
+##### Our new Social Network login view
 ```html
 <html>
   <head>
     <title>Network</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   </head>
   <body>
-    <form method="POST" action="https://id.wework.io/api/v1/login/" id="loginForm">
+    <form method="POST" action="<%= create_login_path %>">
       <input type="text" name="email" placeholder="Email" />
       <input type="password" name="password" placeholder="password" />
       <input type="submit" value="submit" />
     </form>
-    <script type="text/javascript">
-      $("#loginForm").on("submit", function(e){
-        e.preventDefault();
-        var url = $(this).attr("action");
-        var data = $(this).serialize();
-        $.ajax({
-          url: url,
-          type: 'post',
-          data: data,
-          success: function(response) {
-            localStorage.setItem("euuid", response.user.encypted);
-          },
-          error: function(response){
-            alert("Sorry, something went wrong.");
-          }
-        });
-      });
-    </script>
   </body>
 </html>
 ```
+---
 
-Using *GASP* jQuery we are able to post to our authentication app (with properly configured CORS) and 
-get a response that looks something like this:
+Here's the important part:
 
-```json
-{
-  user:{
-    encrypted: SOME_IMPOSSIBLE_TO_DECIPHER_STRING,
-    name: "Jane Doe",
-    email: "jane@doe.com"
-  }
-}
+##### Our new Social Network's Application Controller
+
+```ruby
+class ApplicationController < ActionController::Base
+
+  protected
+
+  def decrypt(encrypted_uuid)
+    begin
+      decipher         = OpenSSL::Cipher.new 'aes-256-cbc'
+      decipher.decrypt
+      decipher.padding = 1
+      decipher.key     = ENV['SOME_SECRET_KEY']
+      decipher.iv      = ENV['SOME_SECRET_IV']
+      decrypted        = cipher.update(Base64.urlsafe_decode64(encrypted_uuid)) + decipher.final
+      decrypted
+    rescue
+      head 403 and return
+    end
+  end
+
+  def current_user
+    if params[:encrypted_user_uuid]
+      @current_user ||= User.find_by_uuid( decrypt_uuid(params[:encrypted_user_uuid]) )
+    end
+  end
+  helper_method :current_user
+
+  def require_user
+    if !current_user.present?
+      head 403
+    end
+  end
+
+end
 ```
 
-We then store the encrypted key to local storage, where we'll use it for subsequent calls to the servers from the client.
+You'll notice that the ``` decrypted_uuid ``` follows the same pattern as the encryption method. 
+As you can probably guess, this runs through the previously documented code, essentially in reverse, and it outputs a recognize-able
+uuid that you can use for lookup.
+
+### Great Success!
+
+---
+
+##### Cautions and Caveats:
+
+As with any security implementation, there are ways to make this more robust and (probably) more than a few different through it. 
+You should always take your time and implement the system that is best for your needs and take into account what you're securing, 
+highly classified documents vs payment information vs access to profile information and make your decision appropriately.
+
+I hope you found this enlightening and happy lock downs!
+
+---
+
+
+
+
+
 
 
 
