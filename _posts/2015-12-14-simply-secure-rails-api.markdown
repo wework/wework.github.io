@@ -2,10 +2,34 @@
 layout:       post
 title:        Simply Secure Rails API
 author:       paul_franzen
-summary:      Ever needed a simple way to lock down an API?
+summary:      If you're attempting to implement a service orientated architecture one of the most daunting tasks can be deciding on a method for securing API endpoints.
 image:        http://res.cloudinary.com/wework/image/upload/s--Al86WVSb--/c_fill,fl_progressive,g_face:center,h_1000,q_jpegmini:1,w_1600/v1427921778/engineering/5-ways-to-create-bulletproof-software-bear.jpg
 categories:   rails, api, security, engineering
 ---
+
+**Quick Note:** 
+
+> Hi, you probably have not seen a lot of articles/posts about how organizations secure their content on the Interwebs. I'm guessing this is a symptom of: 
+> 
+> 1. Fear of exposing specific practices that could put their data / applications at risk.
+> 
+> 2. Fear of backlash among the development community where misunderstandings and semantic arguments reign supreme. And can label an entire company, or an individual (myself) as incompetent.
+> 
+> I'd by lying if I said that these fears are not in my mind when authoring this post, but by relegating these topics to back-room-locked-down-hundred-page-decks from security consultants we deny ourselves public and accessible conversations around one of the most important issues in our industry. 
+> 
+> Working at a company like WeWork, I (We) believe that individual success is exponentially more achievable when you're part of a greater community. 
+> 
+> This belief can sometimes mean uncomfortable travels in which trust outweighs mistrust and you are willing to take on risk in the interest of greater success for both yourself and your community.
+> 
+> Ok. Now that's out of the way. What follows is a system/explanation, undoubtedly flawed, but one which We hope will help some folks to understand some security concepts a little better and maybe help them in there travels. 
+> 
+> Thank you, and as always, comments and feedback are not only welcome, but necessary.
+
+
+
+---
+
+
 
 If you're attempting to implement a service orientated architecture 
 one of the most daunting tasks can be deciding on a method for 
@@ -54,11 +78,11 @@ Receiving APP:
 ```
 
 This is a fine system, pleasingly simple and straight-forward.
-However, it misses one basic fact about these requests: Most of them 
-are made on behalf of the current user and not the requesting
-application. 
+However, it misses one basic fact about these requests: Most 
+are made on behalf of the current **user and not the requesting
+application.** 
 
-So a posts controller like this:
+So a posts controller:
 
 ```ruby
   module Api
@@ -92,9 +116,9 @@ know who the "current_user" is without passing in some extra variable.
 
 OAuth especially via [DoorKeeper](https://github.com/doorkeeper-gem/doorkeeper) 
 and [Omniauth](https://github.com/intridea/omniauth), is amazing, 
-but popping opening new windows (or mobile apps), redirect URIs, tokens, secrets, and the funky 
+but popping-open new windows (or mobile apps), redirect URIs, tokens, secrets, and the funky 
 user experience that often accompany them can be a bit too much
-ceremony especially if you're connecting two trusted applications.
+ceremony especially if you're connecting two *trusted* applications.
 
 #### Tokens to the rescue!
 
@@ -149,7 +173,7 @@ module Api
       def create # POST: /api/v1/login
         @user = User.find_by(email: params[:email])
 
-        if if User.authenticate(params[:email], params[:password])
+        if User.authenticate(params[:email], params[:password])
           respond_with: @user.as_json()
         else 
           head 404
@@ -220,7 +244,7 @@ class User < ActiveRecord::Base
 end
 ```
 
-Look at this bonkers class! It's pretty hard to figure out what's going on here. And to be fair it's outside 
+Look at this bonkers encrypted method! It's pretty hard to figure out what's going on here. And to be fair, it's way outside 
 the norm of ordinary, MVC style web development. So lets go through it line by line.
 
 #### Line 1
@@ -273,7 +297,7 @@ Consult the [documentation](http://docs.ruby-lang.org/en/trunk/OpenSSL/Cipher.ht
 
 ---
 
-For both of these, as implied by the code, you'll want to store them outside of version control and in some sort of easily changeable way in case they are ever compromised.
+For both of these (as implied by the code), you'll want to store them outside of version control and in some sort of easily changeable way in case they are ever compromised.
 
 You'll also want to use different values for each environment, i.e. development, test, staging, production.
 
@@ -619,7 +643,7 @@ Now we are accessing this user based on an easily revoke-able token in the clien
 
 ##### Problem 2: Decoding
 
-Since we are encoding a uuid and the encrypted uuid is stored in the client its *technically possible*, the best kind of possible, for a nefarious person to gather up 
+Since we are encoding a uuid and the encrypted uuid is stored in the client its *technically possible* ([the best kind of possible](https://www.youtube.com/watch?v=hou0lU8WMgo)) for a nefarious person to gather up 
 enough uuids and their encrypted counterparts to break our encryption. 
 
 So lets add some additional values to our encryption for parsing.
@@ -697,27 +721,13 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-Since our apps know what keys are valid and know precisely how they are encrypted. Its fairly simple to add this extra little layer which would make brute forcing via many uuids *practically* impossible.
-
+Since our apps know what keys are valid and know precisely how they are encrypted. 
+Its fairly simple to add this extra little layer which would make brute forcing via many uuids *practically* impossible.
 
 ## Cautions and Caveats:
 
 As with any security implementation, there are ways to make this more robust and (probably) more than a few different through it. 
 You should always take your time and implement the system that is best for your needs and take into account what you're securing, 
-highly classified documents vs payment information vs access to profile information and make your decision appropriately.
-
-I hope you found this enlightening and many happy lock downs.
+highly classified documents vs payment information vs access to profile information and make your decision/implementation appropriately.
 
 ---
-
-
-
-
-
-
-
-
-
-
-
-
