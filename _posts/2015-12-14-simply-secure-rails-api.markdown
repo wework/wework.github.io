@@ -21,7 +21,7 @@ categories:   rails, api, security, engineering
 > 
 > This belief can sometimes mean uncomfortable travels in which trust outweighs mistrust and you are willing to take on risk in the interest of greater success for both yourself and your community.
 > 
-> Ok. Now that's out of the way. What follows is a system/explanation, undoubtedly flawed, but one which We hope will help some folks to understand some security concepts a little better and maybe help them in there travels. 
+> Ok. Now that's out of the way. What follows is a system/explanation, undoubtedly flawed, but one which We hope will help some folks to understand some security concepts a little better and maybe help them in their journey. 
 > 
 > Thank you, and as always, comments and feedback are not only welcome, but necessary.
 
@@ -449,7 +449,10 @@ end
 ```
 ---
 
-Here's the important part:
+As you can see, this lets you store an encrypted string on the *client* side. And unlike the Master Access Token Approach described at the beginning of this article, 
+this token is only valid for this particular user, so the client can be a mobile app or a web front-end so if this token is compromised, its only for this single user. 
+
+Here's the reaaaalllyy important part:
 
 ##### Our new Social Network's Application Controller
 
