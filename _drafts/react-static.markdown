@@ -38,7 +38,10 @@ In a perfect world we'd have all the roots logic run through webpack as well. Lu
 
 ## Using React, React Router, and Redux
 
-First, let's assume the following in your webpack.config.js:
+We made 2 major choices to extend the [tutorial](http://jxnblk.com/writing/posts/static-site-generation-with-react-and-webpack/) mentioned above on building static sites with React.
+
+[static-site-generator-webpack-plugin](https://github.com/markdalgleish/static-site-generator-webpack-plugin)
+[extract-text-webpack-plugin](https://github.com/webpack/extract-text-webpack-plugin)
 
 ```js
 
