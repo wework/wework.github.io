@@ -6,7 +6,11 @@ layout: default
   <div class="posts">
     {% for post in paginator.posts %}
       <div class="post">
-        <a href="{{ post.url | prepend: site.baseurl }}" class="post-link">
+        <a
+          href="{{ post.url | prepend: site.baseurl }}"
+          class="post-link"
+          data-track="Click Interaction"
+          data-props='{"label": "{{ post.title }}", "placement": "posts index"}'>
           <p class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</p>
           {% if post.image %}
             <div class="post-image" style="background-image:url({{post.image}})"></div>
