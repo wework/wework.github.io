@@ -8,18 +8,22 @@
   </div>
 </footer>
 
-{% if site.google_analytics %}
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+<script type="text/javascript">
+  // Add click listener for segment's analytics.js library
+  $(function () {
+    var trackLinks = $(document.links).filter(function() {
+      return this.getAttribute('data-track') !== null
+    })
 
-ga('create', '{{ site.google_analytics }}', 'auto');
-ga('send', 'pageview');
+    trackLinks.on('click', function(event) {
+      const trackEvent = this.getAttribute('data-track');
+      const properties = JSON.parse(this.getAttribute('data-props')) || {};
+
+      if (window.jekyll_environment === 'production') {
+        analytics.track(trackEvent, properties);
+      } else {
+        console.log("Track Event: ", trackEvent, "Track Props: ", properties);
+      }
+    });
+  });
 </script>
-{% endif %}
-
-{% if site.hello_bar %}
-<script src="//my.hellobar.com/{{site.hello_bar}}.js" type="text/javascript" charset="utf-8" async="async"></script>
-{% endif %}

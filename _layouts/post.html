@@ -86,7 +86,11 @@ layout: default
   <h4 class="related-post-title mt2">Related Posts {{site.related_posts.size}}</h4>
   {% for post in site.related_posts %}
     <div class="post">
-      <a href="{{ post.url | prepend: site.baseurl }}" class="post-link">
+      <a
+        href="{{ post.url | prepend: site.baseurl }}"
+        class="post-link"
+        data-track="Click Interaction"
+        data-props='{"label": "{{ post.title }}", "placement": "related posts"}'>
         <h5 class="post-title">{{ post.title }}</h5>
       </a>
     </div>

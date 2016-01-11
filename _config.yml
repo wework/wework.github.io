@@ -14,12 +14,8 @@ permalink:        pretty
 # Syntax highlighting
 highlighter:      pygments
 
-
-# hellobar.com
-hello_bar: 5a9be6e710af44d4d730cfd1b4d291233f0f7fde
-
-# Google analytics
-google_analytics: UA-4260314-5
+# Segment (for Google Analytics)
+segment: gWTkCwUDZBGFC06qFGZAwYDVMgeDWoEj
 
 # Optional features
 animated:           false
