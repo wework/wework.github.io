@@ -10,4 +10,11 @@ amit_rao:
   author_image: https://s.gravatar.com/avatar/728793f290309555ff8ae13fcec76787?s=80
   github: https://github.com/uBhappy2
   twitter: https://twitter.com/amitmrao
-  summary: Principal mobile engineer (iOS) and open-source civic hacker. 
+  summary: Principal mobile engineer (iOS) and open-source civic hacker.
+
+matt_star:
+  name: Matt Star
+  gravatar_email: mstar@wework.com
+  github: https://github.com/mattjstar
+  twitter: https://twitter.com/mattjstar
+  summary: Software Engineer at WeWork. React. Redux. Front End.

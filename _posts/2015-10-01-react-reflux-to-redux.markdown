@@ -1,7 +1,7 @@
 ---
 layout:       post
 title:        React Tutorial - Converting Reflux to Redux
-author:       Matt Star
+author:       matt_star
 summary:
 image:        http://res.cloudinary.com/wework/image/upload/s--xpIlilub--/c_scale,q_jpegmini:1,w_1000/v1443207604/engineering/shutterstock_294201896.jpg
 categories:   process
