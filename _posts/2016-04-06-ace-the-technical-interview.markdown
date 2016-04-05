@@ -35,6 +35,8 @@ During my technical interviews for the WeWork engineering team, I was asked this
 
 > If the Wizard accepts the fairy cookies and request gem, they get to return to their fairy village with all sorts of magical wonders to share. Once they arrive home, they put together a fancy party for all their friends, with HTML tables and CSS streamers, and JS magicians to entertain."
 
-So that's basically how the internet works, and how to pass the technical interview, with some flourish. Stay tuned for a follow up post on how to write any function with Big O(1) while wearing a [silly hat](https://www.youtube.com/watch?v=vEiyBbP28g8)!
+So that's basically how the internet works*, and how to pass the technical interview, with some flourish. Stay tuned for a follow up post on how to write any function with Big O(1) while wearing a [silly hat](https://www.youtube.com/watch?v=vEiyBbP28g8)!
 
 [We're hiring!](http://grnh.se/ud2teg) 
+
+*That's not really how the internet works, of course. This is a simplification of what takes place, although the actual processes do involve fairies and a semi-omniscient being sometimes referred to as a Server Wizard. This depiction was written predominantly for the purposes of [comedy](https://youtu.be/iV2ViNJFZC8), but also to foster discussion of how to conduct effective interviews. A "good" answer to this question doesn't necessarily need to touch on every detail, but should be able to reason intelligently and draw conclusions from the discussion. 
