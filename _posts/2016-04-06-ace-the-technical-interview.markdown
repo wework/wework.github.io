@@ -29,7 +29,7 @@ This question is great for a number of reasons:
 - the topic is massively practical -- anyone interviewing for an engineering role should understand how the modern internet works
 - it is language/tech stack-agnostic
 
-During my technical interviews for the WeWork engineering team, I was asked this question (twice, in fact!), and here's the answer I gave (kind of):
+During my technical interviews for the WeWork engineering team, I was asked this question and here's the answer I gave (kind of):
 
 > "When a user types a URL into the browser and hits 'enter', the browser fairies sweep up all the magical request dust and use their fairy powers to turn it into a beaaaaauuuuutiful gem. Before embarking on their journey, they first look around the fairy village to see if they already have the ingredients they're looking for. If they don't have them, or if the ingredients are stale, the fairies venture out looking for the DNS Fortune Teller, who shows them where to find the Server Wizard. The fairies then bring the request gem to the Server Wizard (along with cookies, because the Server Wizard demands cookies), who sits on a throne of HTML, CSS, and JavaScript. If the Wizard is pleased by the fairies' request gem, he will bellow to the mountains, '200!!!!!!!' (or possibly some variant of '300!!!!!' if he's already seen that particular request gem, but is still in a good mood). If he is displeased by the fairies' cookies or request gem, he will shout angrily '400!!!' (or something in that range), or '500!!! if he's eaten too many cookies and isn't feeling well. 
 
