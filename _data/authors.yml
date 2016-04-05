@@ -14,7 +14,7 @@ amit_rao:
 
 matt_star:
   name: Matt Star
-  gravatar_email: mstar@wework.com
+  author_image: https://s.gravatar.com/avatar/18337aeb76f9ad0bc4e2b9d210e022c8?s=80
   github: https://github.com/mattjstar
   twitter: https://twitter.com/mattjstar
   summary: Software Engineer at WeWork. React. Redux. Front End.
