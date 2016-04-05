@@ -1,6 +1,6 @@
 ---
 layout:       post
-title:        How to Pass the Technical Interview
+title:        How I Aced my Technical Interview (by pretending to be a wizard)
 author:       gabby_losch
 summary:      Technical interviews don't need to be soulless. Here's the perfect answer, verified by science.
 image:        //res.cloudinary.com/wework/image/upload/v1459867978/technical-interviews.jpg
