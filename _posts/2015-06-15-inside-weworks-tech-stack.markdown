@@ -7,7 +7,7 @@ image:        http://res.cloudinary.com/wework/image/upload/s--Y5EaKyFC--/c_scal
 categories:   engineering
 ---
 
-Last week, our friends at Underdog featured <a href="http://blog.underdog.io/post/121350812362/wework-tackles-hardware-software-challenges" target="_blank">a story about our Tech Stack</a> written by one of our longest tenured Lead Software Developer's, Ramin Bozorgzadeh.
+Last week, our friends at Underdog featured <a href="http://blog.underdog.io/post/121350812362/wework-tackles-hardware-software-challenges" target="_blank">a story about our Tech Stack</a> written by one of our longest tenured Lead Software Developers, Ramin Bozorgzadeh.
 
 Be sure to check out the last bit about how we focused on making the Rails based wework.com as performant as possible, through CDN caching, and a bit of nifty Javascript tinkering.
 
