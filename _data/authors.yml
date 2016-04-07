@@ -18,3 +18,10 @@ matt_star:
   github: https://github.com/mattjstar
   twitter: https://twitter.com/mattjstar
   summary: Software Engineer at WeWork. React. Redux. Front End.
+
+gabby_losch:
+  name: Gabby Losch
+  author_image: https://s.gravatar.com/avatar/a8d45c54dffa6bfffb1762a93597c103?s=80
+  github: https://github.com/GLosch
+  twitter: https://twitter.com/gabbylosch
+  summary: Software Engineer at WeWork, griller of cheeses
