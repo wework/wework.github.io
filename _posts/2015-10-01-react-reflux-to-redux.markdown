@@ -306,7 +306,7 @@ export default function createApiClientStore(initialState) {
 }
 ```
 
-What you're looking at above is another huge benefit to Reflux: [**Middleware**](https://rackt.github.io/redux/docs/advanced/Middleware.html). You can write custom code to inject extensions into your redux flow, or include already written middleware like [redux-thunk](https://github.com/gaearon/redux-thunk) or [redux-logger](https://github.com/fcomb/redux-logger). We'll need redux-thunk for our external API implementation in Example 2.
+What you're looking at above is another huge benefit to Redux: [**Middleware**](https://rackt.github.io/redux/docs/advanced/Middleware.html). You can write custom code to inject extensions into your redux flow, or include already written middleware like [redux-thunk](https://github.com/gaearon/redux-thunk) or [redux-logger](https://github.com/fcomb/redux-logger). We'll need redux-thunk for our external API implementation in Example 2.
 
 Next, let's connect the store to our main `<App />` component using the `<Provider />` component. It "makes our store instance available to the components below." ([DOCS](https://rackt.github.io/redux/docs/basics/UsageWithReact.html))
 
