@@ -27,7 +27,7 @@ The problem was that the model, oriented like this, needs supports. Without supp
 
 ### First Steps
 
-We had a couple laughs, played a round or two with the worst paddle ever made, and then tried again. I checked the "supports" checkbox, re-exported the print file, and fired up the bot.
+We had a couple laughs, played a round or two with the worst paddle ever made, then tried again. I checked the "supports" checkbox, re-exported the print file, and fired up the bot.
 
 ![grey paddle printing](/images/makerbot/grey_paddle_printing.jpg)
 
