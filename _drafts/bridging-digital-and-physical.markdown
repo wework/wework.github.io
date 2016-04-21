@@ -39,7 +39,7 @@ Will made two suggestions: first, alter the model to make it rounder; second, or
 
 With a couple failures under my belt, I decided it was time for a win. I asked Will if he could create a model of a wework logo that I could sit on the top of my monitor. He said it would be a piece of cake, he just needed to know the thickness of my bezel, and a copy of our logo in vector format.
 
-So I asked [Tracy](http://www.tracyloi.com), one of our amazing designers, if she had a version of our logo that Will could use. And indeed she did! She exported an .eps that Will imported into Rhino. There he extruded it, boolean union-ed it with a little sled, and exported an.stl. We imported that into MakerWare, added a raft and supports, exported the .x3g onto the SD card, and printed it:
+So I asked [Tracy](http://www.tracyloi.com), one of our amazing designers, if she had a version of our logo that Will could use. And indeed she did! She exported an .eps that Will imported into Rhino. There he extruded it, boolean union-ed it with a little sled, and exported an .stl. We imported that into MakerWare, added a raft and supports, exported the .x3g onto the SD card, and printed it:
 
 ![wework blue](/images/makerbot/wework_blue.jpg)
 
