@@ -4,7 +4,7 @@ title:        Bridging digital and physical with a MakerBot Replicator 2
 author:       Dave Mills
 summary:
 image:        http://res.cloudinary.com/wework/image/upload/v1460131635/pirate_kitteh.jpg
-categories:   process
+categories:   culture
 ---
 
 "Who's in charge of this thing?" I asked no-one in particular.
