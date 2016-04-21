@@ -19,9 +19,11 @@ We decided to try printing a ping-pong paddle. We exported ScurtWad's [model](ht
 
 Our first print was an epic fail. We refer to it as the ramen paddle.
 
-![ramen paddle](/images/makerbot/failed_paddle.png)
+![ramen paddle](/images/makerbot/ramen_paddle.png)
 
 The problem was that the model, oriented like this, needs supports. Without supports, the extruder extrudes into empty space. Who knew? It filled that empty space with a spaghetti-like structure.
+
+![ramen paddle flaw](/images/makerbot/failed_paddle.png)
 
 ### First Steps
 
