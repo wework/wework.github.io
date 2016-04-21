@@ -55,7 +55,7 @@ If we modified the raft a bit, we could print it on its side so it wouldn't need
 
 ### WeEnclose 
 
-It was at this point that Emiliano on our physical technology team approached me with a proposal. He and I had worked together during our last hack-a-thon. Our team had integrated a WiFi enabled infrared sensor with our conference room system. He wanted to deploy the system, but couldn't find a case that would fit the motley assortment of circuitboards:
+It was at this point that Emiliano on our physical technology team approached me with a proposal. He and I had worked together during our last hack-a-thon. Our team had integrated a WiFi enabled infrared sensor with our conference room system. He wanted to field-test the sensor, but couldn't find a case that would fit the motley assortment of circuitboards:
 
 ![circuitry](/images/makerbot/circuitry.jpg)
 
