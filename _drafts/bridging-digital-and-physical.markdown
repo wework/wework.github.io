@@ -37,7 +37,7 @@ Will made two suggestions: first, alter the model to make it rounder; second, or
 
 ### A Little Branding 
 
-With a couple failures under my belt, I decided it was time for a win. I asked Will if he could create a model of a wework logo that I could sit on the top of my monitor. He said it would be a piece of cake, he just needed to know the thickness of my bezel, and a copy of our logo in vector format.
+With a couple failures under my belt, I decided it was time for a win. I asked Will if he could create a model of a WeWork logo that I could sit on the top of my monitor. He said it would be a piece of cake, he just needed to know the thickness of my bezel, and a copy of our logo in vector format.
 
 So I asked [Tracy](http://www.tracyloi.com), one of our amazing designers, if she had a version of our logo that Will could use. And indeed she did! She exported an .eps that Will imported into Rhino. There he extruded it, boolean union-ed it with a little sled, and exported an .stl. We imported that into MakerWare, added a raft and supports, exported the .x3g onto the SD card, and printed it:
 
@@ -103,7 +103,7 @@ But the warping was getting worse:
 
 ![enclosure v2 warped](/images/makerbot/enclosure_v2_warped.jpg)
 
-I wondered if our warped build plate was warping the model. Zach said that wasn't the case, that the raft should accommodate for that. The issue was that tension would build up in the filament during the print, causing the edges to pull in and up.
+I wondered if our warped build plate was warping the model. Zach said the plate wasn't the culprit; the raft should compensate. The issue was that tension builds up in the filament during the print, causing the edges to pull in and up.
 
 He said one approach to this problem was to add little nickel-sized feet to the corners of the model. The feet might pull up a little bit, but their diameter is small so the warping would be minimal. And I could just cut them off with an x-acto knife.
 
