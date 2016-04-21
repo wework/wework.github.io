@@ -33,7 +33,7 @@ This one came out better. But the side we put supports on was too rough, and it'
 
 ![grey paddle rough](/images/makerbot/grey_paddle_rough.jpg)
 
-Will made two suggestions: first, alter the model to make it rounder; second, and orient it on the build plate diagonally. By doing so, it would need fewer supports, and they would attach to the side rather than to the face. Instead of following his advice, we decided to stop printing ping-pong paddles.
+Will made two suggestions: first, alter the model to make it rounder; second, orient it on the build plate diagonally. By doing so, it would need fewer supports, and they would attach to the side rather than to the face. Instead of following his advice, we decided to stop printing ping-pong paddles.
 
 ### A Little Branding 
 
