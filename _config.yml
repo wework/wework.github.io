@@ -51,9 +51,7 @@ share_reddit: true
 share_stumbleupon: false
 
 # Build settings
-markdown:     redcarpet
-redcarpet:
-  extensions: ['smart', 'tables', 'with_toc_data']
+markdown:     kramdown
 permalink:    pretty
 paginate:     3
 sass:
