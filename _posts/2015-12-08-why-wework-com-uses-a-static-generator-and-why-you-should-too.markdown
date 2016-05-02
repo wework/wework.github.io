@@ -10,11 +10,11 @@ categories:   engineering
 ### What is this "static" business all about?
 
 Over the past few years, static site generators have become a hot topic, so much so that [entire sites](https://www.staticgen.com/) have emerged dedicated to tracking and rating them. Don't take my word
-for it, check out this graph from [Google Trends for "static site generator"][2]:
+for it, check out this graph from [Google Trends for "static site generator"](https://www.google.com/trends/explore#q=static%20site%20generator):
 
-[![Google Trends - Static Site Generator][1]][2]
-[1]: http://res.cloudinary.com/wework/image/upload/f_auto/v1448735896/engineering/static-site-generator.png
-[2]: https://www.google.com/trends/explore#q=static%20site%20generator
+[![Google Trends - Static Site Generator][graph]](https://www.google.com/trends/explore#q=static%20site%20generator)
+
+[graph]: http://res.cloudinary.com/wework/image/upload/f_auto/v1448735896/engineering/static-site-generator.png
 
 The idea is actually quite simple. On a traditional *dynamic* site, each page is processed and generated on the server per request (let's ignore caching strategies for the sake of argument.) If you consider the amount of information that changes on a daily, or even weekly basis on a site like [wework.com](https://www.wework.com), it is actually quite wasteful to have a server process each and every request that comes through. A static site, on the other hand, is processed and generated just **once** on each deploy and all the server has to do is serve up the resulting generated HTML. Of course, this is an overly simplified explanation of how it all works, and this process doesn't work as well on all sites, but it does work really well for marketing and informational sites like [wework.com](https://www.wework.com).
 
