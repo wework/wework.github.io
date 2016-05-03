@@ -1,6 +1,6 @@
 ---
 layout:       post
-title:        Hot To Scale As A CTO - Why Course Correction Is Inefficient (Video)
+title:        How To Scale As A CTO - Why Course Correction Is Inefficient (Video)
 author:       on_freund
 summary:
 image:        //res.cloudinary.com/wework/image/upload/c_lfill,f_auto,fl_progressive,g_north,h_1400,w_1400/v1461959537/engineering/scaling_cto_talk.jpg
