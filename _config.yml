@@ -12,7 +12,7 @@ gems: [jekyll-paginate, jekyll-watch, redcarpet, octopress-autoprefixer]
 permalink:        pretty
 
 # Syntax highlighting
-highlighter:      pygments
+highlighter:      rouge
 
 # Segment (for Google Analytics)
 segment: gWTkCwUDZBGFC06qFGZAwYDVMgeDWoEj
