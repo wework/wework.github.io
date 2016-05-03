@@ -10,7 +10,7 @@ wistia_video: wistia_async_sbkrpcark4
 
 ### The Scaling CTO Talk at the Wheelhouse CTO Summit at the NASDAQ
 
-As VP Engineering at WeWork, I had a great time attending the [Wheelhouse CTO Summit held at the NASDAQ](http://summits.wheelhouse.io/newyork/index.html) a few months ago.
+I had a great time attending the [Wheelhouse CTO Summit held at the NASDAQ](http://summits.wheelhouse.io/newyork/index.html) a few months ago.
 
 There were a lot of really great talks by some of the top engineering leaders in NY. Here's one by yours truly:
 
@@ -19,10 +19,10 @@ There were a lot of really great talks by some of the top engineering leaders in
 
 Some of the topics I cover:
 
-* Companies at different stages require different skills from successful engineering leaders (2:30).
-* Everyone knows that as the company grows you're expected to make the shift from a technical manager to a peoples manager, but what does it mean? (starting at 3:40)
+* Companies at different stages require different skills from successful engineering leaders. (2:30)
+* Everyone knows that as the company grows you're expected to make the shift from a technical manager to a people's manager, but what does it mean? (starting at 3:40)
 * What's the difference between speed and agility and why are we moving so slowly? (8:45)
 * What is Conway's law and how can you use it to your advantage? (12:02)
-* What can architectural patterns teach us about product teams organizational structures? (12:37)
+* What can architectural patterns teach us about product teams and organizational structures? (12:37)
 
 Would love to hear your feedback in the comments.
