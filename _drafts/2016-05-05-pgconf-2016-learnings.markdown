@@ -4,7 +4,7 @@ title:        PGConf 2016 Takeaways
 author:       gabby_losch
 summary:      
 image:        http://res.cloudinary.com/wework/image/upload/v1462568584/pgconf.jpg
-categories:   conferences, industry, databases
+categories:   databases
 ---
 
 ##All hail PostgreSQL!
@@ -15,13 +15,13 @@ Over three days, we delved into some lesser-known features, learned about the la
 
 ###PostGIS
 
-Here at WeWork, we love maps. At the time of this writing, WeWork has just shy of 100 locations in 9 countries, with more popping up seemingly every day. With such a huge footprint, having high-quality location and mapping data is a must. PostGIS provides some massively powerful features for our uses. Here are some highlights that were covered in a great demonstration by Leo Hsu and Regina Obe:
+At the time of this writing, WeWork has just shy of 100 locations in 9 countries, with more popping up seemingly every day. With such a huge footprint, having high-quality location and mapping data is a must. Also, we just really love maps. [PostGIS](http://postgis.net/) provides some massively powerful features for our uses. Here are some highlights that were covered in a great demonstration by Leo Hsu and Regina Obe:
 
 ####Results Within a Specified Distance
 
 Using [ST_Distance](http://postgis.net/docs/ST_Distance.html) and some basic API calls to Seamless, Yelp, or any other local aggregator/search engine, we can return a list of locations based on distance from a fixed point. If that fixed point is your WeWork office, this query could do everything from finding your next lunch spot, to the nearest ice cream place, to a great neighborhood bakery....I think I might just be hungry.
 
-```
+~~~ sql
     SELECT name, other_tags­>'amenity' As type,
     ST_Distance(pois.geog,ref.geog) As dist_m
     FROM brooklyn_pois AS pois,
@@ -29,59 +29,65 @@ Using [ST_Distance](http://postgis.net/docs/ST_Distance.html) and some basic API
     WHERE other_tags @> 'cuisine=>indian'::hstore
     AND ST_DWithin(pois.geog, ref.geog, 1000)
     ORDER BY dist_m;
-```
+~~~
 
-name | type | dist_m
+~~~ sql
+    name | type       | dist_m
+    ‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐+‐‐‐‐‐
 
-‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐+‐‐‐‐‐
-
-Asya | restaurant | 704.31393886
-(1 row)
+    Asya | restaurant | 704.31393886
+    (1 row)
+~~~
 
 ####Render 3D content
 
-When paired with [X3DOM](http://www.x3dom.org), PostGIS can render 3D shapes directly into HTML. Imagine 3D renderings of our buildings on the [Locations Page](http://wework.com/locations) that you can move around. 
+When paired with [X3DOM](http://www.x3dom.org), PostGIS can render 3D shapes directly into HTML. The results are a bit boxy looking, but if your needs don't require high levels of detail, this is a great solution that doesn't require tons of overhead. 
 
 ####DateTime Ranges
 
-PostGIS has a whole set of built-in functions to handle datetime calculations and manipulations, including collapsing contiguous ranges into a single range, and consolidating discontinuous or overlapping ranges. This can be particularly useful in ensuring that we maintain clean, understandable usage data around our conference room bookings and building tour schedules. 
+PostGIS has a whole slew of built-in functions to handle datetime calculations and manipulations, including collapsing contiguous ranges into a single range, and consolidating discontinuous or overlapping ranges. This can be particularly useful in ensuring that we maintain clean, understandable usage data around our conference room bookings and tour schedules for buildings. 
 
-```
+~~~ sql
     SELECT id,
     to_daterange(
-    (ST_Dump(
-    ST_Simplify(ST_LineMerge(ST_Union(to_linestring(period))),0))
-    ).geom)
+        (ST_Dump(
+        ST_Simplify(ST_LineMerge(ST_Union(to_linestring(period))),0))
+        ).geom)
     FROM (
     VALUES
-    (1,daterange('1970­11­5'::date,'1975­1­1','[)')),
-    (1,daterange('1980­1­5'::date,'infinity','[)')),
-    (1,daterange('1975­11­5'::date,'1995­1­1','[)'))
-    ) x (id, period)
+        (1,daterange('1970­11­5'::date,'1975­1­1','[)')),
+        (1,daterange('1980­1­5'::date,'infinity','[)')),
+        (1,daterange('1975­11­5'::date,'1995­1­1','[)'))
+        ) x (id, period)
     GROUP BY id;
-```
+~~~
 
-id | to_daterange
+~~~ sql
 
-‐‐‐‐+‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+    id | to_daterange
 
-1 | [1970‐11‐05,1975‐01‐01)
-1 | [1975‐11‐05,infinity)
-(2 rows)
+    ‐‐‐‐+‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+
+    1 | [1970‐11‐05,1975‐01‐01)
+    1 | [1975‐11‐05,infinity)
+    (2 rows)
+~~~
 
 This is obviously a very simplified example with minimal data. But imagine starting with thousands and thousands of rows -- from such simplified output, we can extrapolate meaningful data such as when our conference rooms are most heavily in use and which ones are most-often booked. This helps us determine how many conference rooms new buildings should have, and what sizes they should be. 
 
 ###Don't lock your tables
 
-As your data grows and becomes more complex, your needs and the way you interact with it will likely also change. Avoid locking your precious production tables by following some general rules (care of [Lukas Fittl](http://twitter.com/LukasFittl) of Product Hunt):
+As your data grows and becomes more complex, your needs and the way you interact with it will likely also change. This is perfectly normal, but typically requires modifying your schema. Avoid locking your precious production tables by following some general rules (care of [Lukas Fittl](http://twitter.com/LukasFittl) of Product Hunt):
 
 - Don't remove columns on large tables
-- Don't rename columns
+- Don't rename columns*
 - Always index concurrently
 - Carefully change the column type
 - Carefully add columns with a DEFAULT
 - Carefully add NOT NULL columns
  (note the theme of using care)
+
+*You may be thinking that this suggestion prevents you from making a necessary change to your tables. The key (inadvertent database pun, I swear) is to duplicate any data you'd like to change, make changes to the duplicate, then point your application to the new data. Once that's done, you can delete the old data. This process ensures that the production data isn't locked by the changes. 
 
 ###PostgreSQL Version 9.6
 
