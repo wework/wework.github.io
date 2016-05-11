@@ -33,7 +33,7 @@ Using [ST_Distance](http://postgis.net/docs/ST_Distance.html) and some basic API
 
 ~~~ sql
     name | type       | dist_m
-    ‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐+‐‐‐‐‐
+    ‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 
     Asya | restaurant | 704.31393886
     (1 row)
@@ -66,7 +66,7 @@ PostGIS has a whole slew of built-in functions to handle datetime calculations a
 
     id | to_daterange
 
-    ‐‐‐‐+‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+    ‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 
     1 | [1970‐11‐05,1975‐01‐01)
     1 | [1975‐11‐05,infinity)
@@ -91,6 +91,8 @@ As your data grows and becomes more complex, your needs and the way you interact
 
 ###PostgreSQL Version 9.6
 
-It's gonna be faster. Like, out of the box. You won't have to do anything. ![Wooo!](http://res.cloudinary.com/wework/image/upload/v1462566101/engineering/colbert_celebration.gif)
+It's gonna be faster. Like, out of the box. You won't have to do anything. 
+
+![Wooo!](http://res.cloudinary.com/wework/image/upload/v1462566101/engineering/colbert_celebration.gif){: style="margin: 0 auto; display: block"}
 
 Thanks to the team behind PGConf for putting on a great event! 
