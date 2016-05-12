@@ -1,6 +1,6 @@
 ---
 layout:       post
-title:        PGConf 2016 Takeaways
+title:        The State of PostgreSQL 9.6: PGConf 2016 Takeaways
 author:       gabby_losch
 summary:      
 image:        http://res.cloudinary.com/wework/image/upload/v1462568584/pgconf.jpg
