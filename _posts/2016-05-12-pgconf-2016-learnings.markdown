@@ -9,23 +9,24 @@ categories:   databases
 
 ##All hail PostgreSQL!
 
-Here at WeWork, we rely heavily on PostgreSQL for our data needs. From our member-facing and public technologies to our internal tools, PostgreSQL has us covered. That's why a few of us on the engineering team jumped at the chance to nerd out for a few days at PGConf 2016. How better to spend the first nice days of spring than in a windowless hotel conference room in Downtown Brooklyn?!?!
+Here at WeWork, we rely on PostgreSQL for our data needs. From our member-facing and public technologies to our internal tools, PostgreSQL has us covered. That's why a few of us on the engineering team jumped at the chance to nerd out for a few days at PGConf 2016. How better to spend the first nice days of spring than in a windowless hotel conference room in Downtown Brooklyn?
 
-Over three days, we delved into some lesser-known features, learned about the latest additions coming to version 9.6 and 9.5 patches, and generally soaked up the shared knowledge of the PG community.
+Over three days, we delved into lesser-known features, learned about additions coming to version 9.6, and soaked up the shared knowledge of the community.
 
 ###PostGIS
 
-At the time of this writing, WeWork has just shy of 100 locations in 9 countries, with more popping up seemingly every day. With such a huge footprint, having high-quality location and mapping data is a must. Also, we just really love maps. [PostGIS](http://postgis.net/) provides some massively powerful features for our uses. Here are some highlights that were covered in a great demonstration by Leo Hsu and Regina Obe:
+At the time of writing, WeWork has just shy of 100 locations in 9 countries, with more on the way. Given the huge footprint, having high-quality location and mapping data is a must. Also, we really love maps. Enter [PostGIS](http://postgis.net/).
+
+Leo Hsu and Regina Obe, authors of PostGIS in Action, gave a great presentation. Here are some of the highlights. 
 
 ####Results Within a Specified Distance
 
-Using [ST_Distance](http://postgis.net/docs/ST_Distance.html) and some basic API calls to Seamless, Yelp, or any other local aggregator/search engine, we can return a list of locations based on distance from a fixed point. If that fixed point is your WeWork office, this query could do everything from finding your next lunch spot, to the nearest ice cream place, to a great neighborhood bakery....I think I might just be hungry.
+Using [ST_Distance](http://postgis.net/docs/ST_Distance.html), we can return a list of locations based on distance from a fixed point. If that fixed point is your WeWork office, and the locations come from API calls to Yelp, then we've just found all possible lunch spots. Or ice cream places around the park. Or bakeries in your neighborhood. I think I might just be hungry.
 
 ~~~ sql
     SELECT name, other_tags­>'amenity' As type,
-    ST_Distance(pois.geog,ref.geog) As dist_m
-    FROM brooklyn_pois AS pois,
-    (SELECT ST_Point(­73.988697, 40.69384)::geography) As ref(geog)
+        ST_Distance(pois.geog,ref.geog) As dist_m
+    FROM brooklyn_pois AS pois, (SELECT ST_Point(­73.988697, 40.69384)::geography) As ref(geog)
     WHERE other_tags @> 'cuisine=>indian'::hstore
     AND ST_DWithin(pois.geog, ref.geog, 1000)
     ORDER BY dist_m;
@@ -41,7 +42,7 @@ Using [ST_Distance](http://postgis.net/docs/ST_Distance.html) and some basic API
 
 ####Render 3D content
 
-When paired with [X3DOM](http://www.x3dom.org), PostGIS can render 3D shapes directly into HTML. The results are a bit boxy looking, but if your needs don't require high levels of detail, this is a great solution that doesn't require tons of overhead. 
+When paired with [X3DOM](http://www.x3dom.org), PostGIS can render 3D shapes directly into HTML. The results are a bit boxy, but if you don't need high levels of detail, then this is a great solution with little overhead.
 
 ####DateTime Ranges
 
@@ -49,10 +50,10 @@ PostGIS has a whole slew of built-in functions to handle datetime calculations a
 
 ~~~ sql
     SELECT id,
-    to_daterange(
-        (ST_Dump(
-        ST_Simplify(ST_LineMerge(ST_Union(to_linestring(period))),0))
-        ).geom)
+        to_daterange(
+            (ST_Dump(
+            ST_Simplify(ST_LineMerge(ST_Union(to_linestring(period))),0))
+            ).geom)
     FROM (
     VALUES
         (1,daterange('1970­11­5'::date,'1975­1­1','[)')),
