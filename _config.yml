@@ -6,7 +6,13 @@ description: ""
 baseurl:     ""
 url:         "http://engineering.wework.com"
 
-gems: [jekyll-paginate, jekyll-watch, redcarpet, octopress-autoprefixer]
+gems: [
+  jekyll-feed,
+  jekyll-paginate,
+  jekyll-watch,
+  redcarpet,
+  octopress-autoprefixer
+]
 
 # Permalinks
 permalink:        pretty
