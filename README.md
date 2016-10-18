@@ -4,7 +4,7 @@ The WeWork Engineering blog is now being hosted on Medium as a Publication. To c
 
 - Go to medium.com and click on "Sign in / Sign up" in the top right
 - Sign up using your WeWork Google account (you may also use your personal Medium account if you already have one)
-- Send an email to dev-leads@wework.com with your Medium @username (can be found when you visit your Medium profile in the URL)
+- Send an email to "dev-leads" with your Medium @username (can be found when you visit your Medium profile in the URL)
 - Start writing your post and when you are added as a "Writer" to the WeWork Engineering Publications, you will be able to send your article to the Publication for review and publishing
 
 More information about Medium Publications:
